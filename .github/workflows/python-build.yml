@@ -37,6 +37,6 @@ jobs:
         pip install flake8-logging-format 
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --application-import-names='<temperatures>' --ignore=D210,D100,D104,D401,D202,E202,E201,I201 --show-source --enable-extension=G --max-line-length=140 --max-complexity=7 --count
-    - name: Test with pytest
-      run: |
-        pytest . -vs
+#     - name: Test with pytest
+#       run: |
+#         pytest . -vs
