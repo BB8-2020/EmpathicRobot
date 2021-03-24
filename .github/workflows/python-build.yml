@@ -3,10 +3,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 
 name: Build
-  
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
 
-name: Build
 
 on:
   pull_request:
