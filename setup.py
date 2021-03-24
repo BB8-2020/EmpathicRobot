@@ -1,12 +1,8 @@
 from setuptools import setup
 
 install_requires = [
-    'flask',
     'matplotlib',
     'seaborn',
-    'scipy',
-    'scikit-learn',
-    'requests',
     'numpy',
     'pandas',
 ]
