@@ -1,8 +1,10 @@
-
 # Repo related files only TL's should be able to change
 CODEOWNERS  @BB8-2021/technical-leads
-README.md   @BB8-2021/technical-leads
 .gitignore  @BB8-2021/technical-leads
 
 # Code that only TL's should be able to change
+requirments-dev.txt @BB8-2021/technical-leads
 setup.py    @BB8-2021/technical-leads
+setup.cfg    @BB8-2021/technical-leads
+
+.github/workflows/python-build.yml @BB8-2021/technical-leads

@@ -127,3 +127,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDE
+.vscode/settings.json
+.idea
+
+# Office tmp
+*.tmp
+~$*.doc*
+Backup of *.doc*
+~$*.xls*
+*.xlk
+~$*.ppt*
+
+# Large files
+.zip
+.rar
+.csv
+
+# Keep structure
+!*.keep
