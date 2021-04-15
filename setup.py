@@ -1,29 +1,23 @@
 from setuptools import find_packages, setup
 import os
-import sys
-from dotenv import load_dotenv
+
 
 install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
-    'python-dotenv',
+    "python-dotenv",
 ]
 
-if sys.platform.startswith('linux') or sys.platform == 'darwin':
-    install_requires.extend(['pycocotools'])
-elif sys.platform == 'win32':
-    install_requires.extend(['pycocotools-windows'])
-else:
-    raise OSError(f"{sys.platform} is not supported")
-
-true_set = {'true', '1', 't', 'y', 'yes'}
+true_set = {'true','t', 'y', 'yes'}
 
 is_developer = None
 
-load_dotenv()  # take environment variables from .env.
+# def read_developer_acces():
+#     if os.path.isfile(".env"):
+#         for line in open(".env").read():
+#             if line.startswith()
 
-DEVELOP_MODE = os.getenv("DEVELOPER", "False").lower() in true_set # Read from DEVELOPER env variable elsewise use false.
 
 # Install requirements if the user is developer
 if is_developer:
