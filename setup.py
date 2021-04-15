@@ -38,6 +38,7 @@ if is_developer:
         'flake8-logging-format',
         'mypy',
         'pytest',
+        'python-dotenv',
     ])
 
 setup(
