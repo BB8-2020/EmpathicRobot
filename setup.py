@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
 import os
 import sys
+from dotenv import load_dotenv
 
 
 install_requires = [
@@ -20,13 +21,9 @@ true_set = {'true', '1', 't', 'y', 'yes'}
 
 is_developer = None
 
-if os.path.isfile('.env'):
-    for line in open('.env').read().split('/n'):
-        if line.replace(' ', '').startswith('DEVELOPER='):
-            is_developer = ''.join(line.split('=')[1:]).lower() in true_set
+load_dotenv()  # take environment variables from .env.
 
-if is_developer is None:
-    is_developer = os.environ.get('DEVELOPER', 'false').lower() in true_set
+DEVELOP_MODE = os.getenv("DEVELOPER", "False").lower() in true_set # Read from DEVELOPER env variable elsewise use false.
 
 # Install requirements if the user is developer
 if is_developer:
