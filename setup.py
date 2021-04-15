@@ -8,7 +8,6 @@ install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
-    "python-dotenv"
 ]
 
 if sys.platform.startswith('linux') or sys.platform == 'darwin':
@@ -39,7 +38,6 @@ if is_developer:
         'flake8-logging-format',
         'mypy',
         'pytest',
-        'dotenv'
     ])
 
 setup(
