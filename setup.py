@@ -27,6 +27,7 @@ DEVELOP_MODE = os.getenv("DEVELOPER", "False").lower() in true_set # Read from D
 
 # Install requirements if the user is developer
 if is_developer:
+
     install_requires.extend([
         'flake8',
         'flake8-import-order',
