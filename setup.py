@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
 import os
 import sys
+from dotenv import load_dotenv
 
 install_requires = [
     "tensorflow",
@@ -19,8 +20,6 @@ else:
 true_set = {'true', '1', 't', 'y', 'yes'}
 
 is_developer = None
-
-from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
 
