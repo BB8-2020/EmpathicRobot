@@ -8,6 +8,7 @@ install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
+    "python-dotenv"
 ]
 
 if sys.platform.startswith('linux') or sys.platform == 'darwin':

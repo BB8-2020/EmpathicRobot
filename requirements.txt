@@ -1,1 +1,1 @@
-dotenv
+python-dotenv==0.14.0
