@@ -37,7 +37,8 @@ if is_developer:
         'flake8-rst-docstrings',
         'flake8-logging-format',
         'mypy',
-        'pytest'
+        'pytest',
+        'dotenv'
     ])
 
 setup(
