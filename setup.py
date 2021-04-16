@@ -1,27 +1,31 @@
 from setuptools import find_packages, setup
 import os
 
-
 install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
-    "python-dotenv",
 ]
+true_set = {'true', 't', 'y', 'yes'}
 
-true_set = {'true','t', 'y', 'yes'}
 
-is_developer = None
+def read_developer_access() -> bool:
+    """Reads of the developer access true else return a None."""
+    developer = None
+    if os.path.isfile(".env"):
+        for line in open(".env").read().split('/n'):
+            if line.replace(' ', '').startswith('DEVELOPER='):
+                developer = ''.join(line.split('=')[1:]).lower() in true_set
+    return developer
 
-# def read_developer_acces():
-#     if os.path.isfile(".env"):
-#         for line in open(".env").read():
-#             if line.startswith()
 
+# Check if the user is developer
+is_developer = read_developer_access()
+if is_developer is None:
+    is_developer = os.environ.get('DEVELOPER', 'false').lower() in true_set
 
 # Install requirements if the user is developer
 if is_developer:
-
     install_requires.extend([
         'flake8',
         'flake8-import-order',
@@ -32,7 +36,6 @@ if is_developer:
         'flake8-logging-format',
         'mypy',
         'pytest',
-        'python-dotenv',
     ])
 
 setup(
@@ -43,5 +46,4 @@ setup(
     author_email='maria.dukmak@student.hu.nl',
     packages=find_packages(),
     install_requires=install_requires,
-  
 )
