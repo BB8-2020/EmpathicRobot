@@ -103,6 +103,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env*
 .venv
 env/
 venv/
@@ -141,9 +142,9 @@ Backup of *.doc*
 ~$*.ppt*
 
 # Large files
-.zip
-.rar
-.csv
+*.zip
+*.rar
+*.csv
 
 # Keep structure
 !*.keep
