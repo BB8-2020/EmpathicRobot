@@ -4,12 +4,10 @@
 This project is to recognize emotions using camera images of the SANbot Elf robot.
  
 
-## Install 
+##Install 
 Rename `.env.example` to `.env`  
-Install al requirements by run`pip install .`
+To install al requirements by run`pip install .`
 
-## Developer 
-If you are a developer please set `developer=True` in `.env`
-
-
+##Developer 
+If you are a developer set `developer=True` in `.env`
 
