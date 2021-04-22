@@ -32,7 +32,9 @@ def create_model():
         keras.Input(shape=(48, 48, 1)),
         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', name='conv1'),
         layers.BatchNormalization(axis=-1),
-        layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', name='conv2'),
+        layers.Conv2D(kernel_size=(3,3), filters=64, activation='relu', name='conv2'),
+        layers.BatchNormalization(axis=-1),
+        layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', name='conv3'),
         layers.BatchNormalization(axis=-1),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
@@ -57,4 +59,4 @@ def train_model(model, batch_size, epochs, vs):
 if __name__ == "__main__":
     model = create_model()
     print(model.summary())
-    train_model(model, 10, 5, 0.2)
+#     train_model(model, 10, 5, 0.2)
