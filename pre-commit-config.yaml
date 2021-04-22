@@ -17,14 +17,6 @@ repos:
       description: "Black: The uncompromising Python code formatter"
       language_version: python3
       exclude: ^docs/
--   repo: https://github.com/PyCQA/bandit
-    rev: '1.7.0'
-    hooks:
-    -   id: bandit
-        name: bandit
-        description: Find common security issues in your Python code using bandit
-        args: [-l, --recursive, -x, tests]
-        files: .py$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks-safety
     rev: v1.2.1
     hooks:
@@ -70,12 +62,3 @@ repos:
     -   id: requirements-txt-fixer
         name: requirements-txt-fixer
         description: Sorts entries in requirements.txt
--   repo: local
-    hooks:
-    -   id: tests
-        name: run tests
-        description: Run tests using pytest.
-        entry: pytest -v
-        language: system
-        types: [python]
-        stages: [push]
