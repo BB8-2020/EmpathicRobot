@@ -9,8 +9,8 @@ happy_frame = pd.read_csv("happy_frame.csv")
 happy_frame['formatted_pixels'] = ''
 
 
-# Function that creates and reshapes the train sets for the model
-def create_trainssets(frame, feature, target):
+def create_trainsets(frame, feature, target):
+    """Create and reshape the train sets for the model."""
     x = []
     for index, image_pixels in enumerate(frame[feature]):
         image_string = image_pixels.split(' ')
@@ -27,6 +27,7 @@ def create_trainssets(frame, feature, target):
 
 
 def create_model():
+    """Create an sequential model that consists of 3 layers."""
     model = keras.Sequential([
         keras.Input(shape=(48, 48, 1)),
         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', name='conv1'),
@@ -47,9 +48,9 @@ def create_model():
     return model
 
 
-# Function that trains the model using the trainsets
 def train_model(model, batch_size, epochs, vs):
-    x_train, y_train = create_trainssets(happy_frame, 'pixels', 'happy')
+    """Train the model using the trainsets created in create_trainsets()."""
+    x_train, y_train = create_trainsets(happy_frame, 'pixels', 'happy')
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs)
 
 
