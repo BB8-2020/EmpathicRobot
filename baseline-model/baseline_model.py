@@ -8,33 +8,36 @@ happy_frame = pd.read_csv("happy_frame.csv")
 
 happy_frame['formatted_pixels'] = ''
 
-def format_pixels(happy_frame):
+
+# Function that creates and reshapes the train sets for the model
+def create_trainssets(frame, feature, target):
     x = []
-    for index, image_pixels in enumerate(happy_frame['pixels']):
+    for index, image_pixels in enumerate(frame[feature]):
         image_string = image_pixels.split(' ')
         x.append(image_string)
 
     x_train = np.array(x).astype("float32")
+    # an image is 48x48 pixels
     X_train = x_train.reshape(x_train.shape[0], 48, 48, 1)
     X_train /= 255
-    y = happy_frame['happy']
+    y = frame[target]
+    # 2 categories: happy and not happy
     y_train = utils.to_categorical(y, 2)
     return X_train, y_train
 
+
 def create_model():
-    model = keras.Sequential()
-    model.add(layers.Conv2D(kernel_size=(3, 3), filters=32, input_shape=(48, 48, 1)))
-    model.add(layers.BatchNormalization(axis=-1))
-    conv1 = layers.Activation("relu")
-    model.add(conv1)
-    model.add(layers.Conv2D(filters=128, kernel_size=(3, 3)))
-    model.add(layers.BatchNormalization(axis=-1))
-    conv2 = layers.Activation("relu")
-    model.add(conv2)
-    model.add(layers.MaxPooling2D(pool_size=(2,2)))
-    model.add(layers.Flatten())
-    model.add(layers.Dropout(0.2))
-    model.add(layers.Dense(2))
+    model = keras.Sequential([
+        keras.Input(shape=(48, 48, 1)),
+        layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', name='conv1'),
+        layers.BatchNormalization(axis=-1),
+        layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', name='conv2'),
+        layers.BatchNormalization(axis=-1),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(2)
+    ]
+    )
 
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
                   optimizer=keras.optimizers.Adam(),
@@ -44,12 +47,13 @@ def create_model():
     return model
 
 
-def train_model(model):
-    X_train, y_train = format_pixels(happy_frame)
-    model.fit(X_train, y_train, batch_size=10, epochs=5, validation_split=0.2)
+# Function that trains the model using the trainsets
+def train_model(model, batch_size, epochs, vs):
+    x_train, y_train = create_trainssets(happy_frame, 'pixels', 'happy')
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs)
 
 
 if __name__ == "__main__":
     model = create_model()
     print(model.summary())
-    train_model(model)
+    train_model(model, 10, 5, 0.2)
