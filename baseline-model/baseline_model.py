@@ -38,14 +38,7 @@ def create_model():
         layers.BatchNormalization(axis=-1),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
-        layers.Dense(2)
-    ]
-    )
-
-    model.compile(loss=keras.losses.CategoricalCrossentropy(),
-                  optimizer=keras.optimizers.Adam(),
-                  metrics=["accuracy"],
-                  )
+        layers.Dense(2, activation='softmax')])
 
     return model
 
@@ -53,10 +46,13 @@ def create_model():
 def train_model(model, batch_size, epochs, vs):
     """Train the model using the trainsets created in create_trainsets()."""
     x_train, y_train = create_trainsets(happy_frame, 'pixels', 'happy')
+    model.compile(loss=keras.losses.CategoricalCrossentropy(),
+                  optimizer=keras.optimizers.Adam(),
+                  metrics=["accuracy"])
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs)
 
 
 if __name__ == "__main__":
-    model = create_model()
-    print(model.summary())
-#     train_model(model, 10, 5, 0.2)
+     model = create_model()
+    # print(model.summary())
+    # train_model(model, 10, 5, 0.2)
