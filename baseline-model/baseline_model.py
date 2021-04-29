@@ -27,7 +27,7 @@ def read_data(path: str) -> dict:
     """
     try:
         data = open(str(path))
-        frame = json.loads(data)
+        frame = json.loads(data.read())
         return frame
     except OSError:
         print(f"File in this {path} does not exist")
@@ -117,9 +117,3 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
                   optimizer=keras.optimizers.Adam(),
                   metrics=["accuracy"])
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs)
-
-
-if __name__ == "__main__":
-    frame = read_data("../../BB8/ferPlus_data_json/train_happy_frame.json")
-    model = create_model()
-    train_model(model, frame, 64, 10, 0.2)
