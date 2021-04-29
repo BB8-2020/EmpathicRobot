@@ -111,9 +111,18 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
 
         vs: float
             float that determines the validation_split.
+
+    Return
+    ------
+        history
+            The callback where all the training results are saved in. This is used for plotting the training results.
     """
+    history = keras.callbacks.History()
+
     x_train, y_train = create_trainsets(frame, 'formatted_pixels', 'happy')
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
                   optimizer=keras.optimizers.Adam(),
                   metrics=["accuracy"])
-    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs)
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history])
+
+    return history
