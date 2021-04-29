@@ -3,11 +3,12 @@ from tensorflow import keras
 from tensorflow.keras import layers, utils
 import json
 import numpy as np
+from typing import Tuple
 
 
-def read_data(path: str):
+def read_data(path: str) -> dict:
     """
-    Read an json file.
+    Read an json file from a given path.
 
     Parameters
     ----------
@@ -16,43 +17,36 @@ def read_data(path: str):
 
     Raises
     ------
-        FileNotFoundError
-            When the wrong path is given and it can't find the file.
-
-        TypeError
-            When no path is given.
-
         OSError
-            When send an int (such as 1) instead of an string as parameter.
+            When the wrong path is given and it can't find the file.
 
     Return
     ------
-        obj
+        frame
             json data that has been converted to an dictionary.
     """
-    with open(path, 'r') as file:
-        data = file.read()
+    try:
+        data = open(str(path))
+        frame = json.loads(data)
+        return frame
+    except OSError:
+        print(f"File in this {path} does not exist")
 
-    obj = json.loads(data)
 
-    return obj
-
-
-def create_trainsets(frame: dict, feature: str, target: str):
+def create_trainsets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
     """
     Create and reshape the train sets for the model.
 
     Parameters
     ----------
         frame: dict
-            Json file that has been converted to an dict using read_data().
+            Json file that has been converted to a dict using read_data().
 
         feature: str
             string used to get the correct feature for the training data from the frame.
 
         target: str
             string used to get the correct target for the training data from the frame.
-
 
     Return
     ------
@@ -73,7 +67,7 @@ def create_trainsets(frame: dict, feature: str, target: str):
     return x_train, y_train
 
 
-def create_model():
+def create_model() -> keras.Sequential:
     """
     Create an sequential model that consists of 3 layers.
 
@@ -97,7 +91,7 @@ def create_model():
     return model
 
 
-def train_model(model, frame: dict, batch_size: int, epochs: int, vs: float):
+def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float) -> None:
     """
     Train the model using the trainsets created in create_trainsets().
 
@@ -128,5 +122,4 @@ def train_model(model, frame: dict, batch_size: int, epochs: int, vs: float):
 if __name__ == "__main__":
     frame = read_data("../../BB8/ferPlus_data_json/train_happy_frame.json")
     model = create_model()
-    # print(model.summary())
     train_model(model, frame, 64, 10, 0.2)
