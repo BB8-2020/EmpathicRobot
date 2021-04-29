@@ -82,11 +82,9 @@ def create_model() -> keras.Sequential:
         layers.BatchNormalization(axis=-1),
         layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', name='conv2'),
         layers.BatchNormalization(axis=-1),
-        layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', name='conv3'),
-        layers.BatchNormalization(axis=-1),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
-        layers.Dense(2, activation='softmax')])
+        layers.Dense(2)])
 
     return model
 
