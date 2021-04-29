@@ -128,11 +128,11 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
     return history
 
 
-def test_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
+def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
     """
-    Test the model using testsets created in create_datasets
+    Test the model using testsets created in create_datasets.
 
-    Paramaters
+    Parameters
     ----------
         model: tensorflow keras model
             the tensorflow keras model that has been made in create_model().
@@ -148,7 +148,6 @@ def test_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
         results
             list of the results of the model after testing it with te testsets.
     """
-
     x_test, y_test = create_datasets(frame, 'formatted_pixels', 'happy')
     results = model.evaluate(x_test, y_test, batch_size=batch_size)
 
