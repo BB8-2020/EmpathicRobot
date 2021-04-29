@@ -1,0 +1,65 @@
+default_language_version:
+    python: python3
+
+repos:
+- repo: https://github.com/pre-commit/mirrors-isort
+  rev: v5.8.0
+  hooks:
+  - id: isort
+    name: isort
+    description: Sort python imports.
+    language_version: python3
+-   repo: https://github.com/ambv/black
+    rev: 20.8b1
+    hooks:
+    - id: black
+      name: black
+      description: "Black: The uncompromising Python code formatter"
+      language_version: python3
+      exclude: ^docs/
+-   repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.2.1
+    hooks:
+    -   id: python-safety-dependencies-check
+        name: safety
+        description: Analyze your Python requirements for known security vulnerabilities
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.0
+    hooks:
+    -   id: flake8
+        name: flake8
+        description: Check python style with flake8.
+        exclude: ^docs/|setup.py|__init__.py|^tests/
+        additional_dependencies: ["flake8-docstrings",
+                                  "flake8-bugbear",
+                                  "flake8-comprehensions"]
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: check-merge-conflict
+        name: check-merge-conflict
+        description: Check for files that contain merge conflict strings.
+    -   id: debug-statements
+        name: debug-statements
+        description: Check for debugger imports and py37+ breakpoint() calls in python source.
+    -   id: detect-private-key
+        name: detect-private-key
+        description: Checks for the existence of private keys.
+    -   id: end-of-file-fixer
+        name: end-of-file-fixer
+        description: Makes sure files end in a newline and only a newline.
+    -   id: trailing-whitespace
+        name: trailing-whitespace
+        description: Trims trailing whitespace
+    -   id: mixed-line-ending
+        args: [--fix=lf]
+    -   id: check-json
+        name: check-json
+        description: Attempts to load all json files to verify syntax.
+    -   id: check-yaml
+        name: check-yaml
+        description: Attempts to load all yaml files to verify syntax.
+    -   id: requirements-txt-fixer
+        name: requirements-txt-fixer
+        description: Sorts entries in requirements.txt
