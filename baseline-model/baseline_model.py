@@ -69,7 +69,7 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
 
 def create_model() -> keras.Sequential:
     """
-    Create an sequential model that consists of 3 layers.
+    Create an sequential model that consists of 2 conv layers and 1 dense layer.
 
     Return
     ------
