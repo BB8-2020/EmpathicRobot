@@ -33,9 +33,9 @@ def read_data(path: str) -> dict:
         print(f"File in this {path} does not exist")
 
 
-def create_trainsets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
+def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
     """
-    Create and reshape the train sets for the model.
+    Create and reshape the datasets for the model. It can be used to create testsets or trainsets.
 
     Parameters
     ----------
@@ -43,28 +43,28 @@ def create_trainsets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray
             Json file that has been converted to a dict using read_data().
 
         feature: str
-            string used to get the correct feature for the training data from the frame.
+            string used to get the correct feature for the dataset from the frame.
 
         target: str
-            string used to get the correct target for the training data from the frame.
+            string used to get the correct target for the dataset from the frame.
 
     Return
     ------
-        x_train
-            training set which contains the features (in this case pictures) for the model.
-        y_train
-            training set which contains the 2 possible targets.
+        x_feature
+            set which contains the features (in this case pictures) for the model.
+        y_target
+            set which contains the 2 possible targets.
     """
     feature_lst = list(frame[feature].values())
 
-    x_train = np.array(feature_lst).astype("float32")
+    x_feature = np.array(feature_lst).astype("float32")
     # an image is 48x48 pixels
-    x_train = x_train.reshape(x_train.shape[0], 48, 48, 1)
-    x_train /= 255
+    x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
+    x_feature /= 255
     target_lst = np.array(list(frame[target].values()))
     # 2 categories: happy and not happy
-    y_train = utils.to_categorical(target_lst, 2)
-    return x_train, y_train
+    y_target = utils.to_categorical(target_lst, 2)
+    return x_feature, y_target
 
 
 def create_model() -> keras.Sequential:
@@ -91,9 +91,9 @@ def create_model() -> keras.Sequential:
     return model
 
 
-def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float) -> None:
+def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float) -> keras.callbacks:
     """
-    Train the model using the trainsets created in create_trainsets().
+    Train the model using the trainsets created in create_dataset().
 
     Parameters
     ----------
@@ -101,7 +101,7 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
             the tensorflow keras model that has been made in create_model().
 
         frame: dict
-            dictionary that is used to create the trainsets in create_trainsets().
+            dictionary that is used to create the trainsets in create_datasets().
 
         batch_size: int
             int that determines the batch_size that is used for training the model.
@@ -119,10 +119,37 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
     """
     history = keras.callbacks.History()
 
-    x_train, y_train = create_trainsets(frame, 'formatted_pixels', 'happy')
+    x_train, y_train = create_datasets(frame, 'formatted_pixels', 'happy')
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
                   optimizer=keras.optimizers.Adam(),
                   metrics=["accuracy"])
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history])
 
     return history
+
+
+def test_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
+    """
+    Test the model using testsets created in create_datasets
+
+    Paramaters
+    ----------
+        model: tensorflow keras model
+            the tensorflow keras model that has been made in create_model().
+
+        frame: dict
+            dictionary that is used to create the testsets in create_datasets().
+
+        batch_size: int
+            int that determines the batch_size that is used for evaluating the model.
+
+    Return
+    ------
+        results
+            list of the results of the model after testing it with te testsets.
+    """
+
+    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'happy')
+    results = model.evaluate(x_test, y_test, batch_size=batch_size)
+
+    return results
