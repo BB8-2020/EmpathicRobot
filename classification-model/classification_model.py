@@ -1,9 +1,12 @@
-"""Baseline model using tensorflow. Consists of 3 layers and should only recognize if someone is happy or not."""
-from tensorflow import keras
-from tensorflow.keras import layers, utils
+"""Firts version of the classification model."""
 import json
-import numpy as np
 from typing import Tuple
+
+import numpy as np
+from tensorflow import keras
+from tensorflow.keras import utils
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense
+from tensorflow.keras.optimizers import Adam
 
 
 def read_data(path: str) -> dict:
@@ -28,6 +31,7 @@ def read_data(path: str) -> dict:
     try:
         data = open(str(path))
         frame = json.loads(data.read())
+        print(frame.keys())
         return frame
     except OSError:
         print(f"File in this {path} does not exist")
@@ -53,7 +57,7 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
         x_feature
             set which contains the features (in this case pictures) for the model.
         y_target
-            set which contains the 2 possible targets.
+            set which contains the 7 possible targets.
     """
     feature_lst = list(frame[feature].values())
 
@@ -62,29 +66,47 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
     x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
     x_feature /= 255
     target_lst = np.array(list(frame[target].values()))
-    # 2 categories: happy and not happy
-    y_target = utils.to_categorical(target_lst, 2)
+    # 7 categories
+    y_target = utils.to_categorical(target_lst, 7)
     return x_feature, y_target
 
 
 def create_model() -> keras.Sequential:
     """
-    Create an sequential model that consists of 2 conv layers and 1 dense layer.
+    Create an sequential model.
 
     Return
     ------
         model
             tensorflow keras model that has been build as seen below.
     """
-    model = keras.Sequential([
-        keras.Input(shape=(48, 48, 1)),
-        layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', name='conv1'),
-        layers.BatchNormalization(axis=-1),
-        layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', name='conv2'),
-        layers.BatchNormalization(axis=-1),
-        layers.MaxPooling2D(pool_size=(2, 2)),
-        layers.Flatten(),
-        layers.Dense(2)])
+    model = keras.Sequential()
+    model.add(Conv2D(input_shape=(48, 48, 1), filters=64, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=64, kernel_size=(3, 3),  activation="relu"))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Flatten())
+    model.add(Dense(units=4096, activation="relu"))
+    model.add(Dense(units=4096, activation="relu"))
+    model.add(Dense(units=2, activation="softmax"))
 
     return model
 
@@ -117,10 +139,9 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
     """
     history = keras.callbacks.History()
 
-    x_train, y_train = create_datasets(frame, 'formatted_pixels', 'happy')
-    model.compile(loss=keras.losses.CategoricalCrossentropy(),
-                  optimizer=keras.optimizers.Adam(),
-                  metrics=["accuracy"])
+    x_train, y_train = create_datasets(frame, 'formatted_pixels', 'emotion')
+    opt = Adam(lr=0.001)
+    model.compile(model.compile(optimizer=opt, loss=keras.losses.categorical_crossentropy, metrics=['accuracy']))
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history])
 
     return history
@@ -146,7 +167,20 @@ def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> lis
         results
             list of the results of the model after testing it with te testsets.
     """
-    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'happy')
+    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'emotion')
     results = model.evaluate(x_test, y_test, batch_size=batch_size)
 
     return results
+
+# Dit heb ik niet kunnen runnen vanwege mijn laptop.
+
+
+if __name__ == "__main__":
+    model = create_model()
+    train_frame = read_data("ferPlus_data_json/train.json")
+    history = train_model(model, train_frame, 64, 10, 0.2)
+
+    test_frame = read_data("ferPlus_data_json/test.json")
+    loss, accuracy = evaluate_model(model,test_frame, 256)
+    print(f"Test loss: {loss:.4f}")
+    print(f"Test accuracy: {accuracy:.4f}")
