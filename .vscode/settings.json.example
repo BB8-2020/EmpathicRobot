@@ -1,7 +1,9 @@
+
 {
     "python.pythonPath": "C:\\Python383\\python.exe",
-    "python.linting.pylintEnabled": false,
+    "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": true,
+    "python.linting.pydocstyleEnabled":true,
     "python.linting.enabled": true,
     "python.linting.mypyEnabled": true,
     "python.linting.pylintArgs": [
