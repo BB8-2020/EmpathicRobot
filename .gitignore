@@ -144,6 +144,7 @@ Backup of *.doc*
 *.zip
 *.rar
 *.csv
+*.json
 
 # Keep structure
 !*.keep
