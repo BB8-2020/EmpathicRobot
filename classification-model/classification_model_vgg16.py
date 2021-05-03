@@ -177,11 +177,11 @@ def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> lis
 if __name__ == "__main__":
     print(tensorflow.version)
 
-    model = create_model()
-    train_frame = read_data("ferPlus_data_json/train.json")
-    history = train_model(model, train_frame, 64, 10, 0.2)
-
-    test_frame = read_data("ferPlus_data_json/test.json")
-    loss, accuracy = evaluate_model(model, test_frame, 256)
-    print(f"Test loss: {loss:.4f}")
-    print(f"Test accuracy: {accuracy:.4f}")
+    # model = create_model()
+    # train_frame = read_data("ferPlus_data_json/train.json")
+    # history = train_model(model, train_frame, 64, 10, 0.2)
+    #
+    # test_frame = read_data("ferPlus_data_json/test.json")
+    # loss, accuracy = evaluate_model(model, test_frame, 256)
+    # print(f"Test loss: {loss:.4f}")
+    # print(f"Test accuracy: {accuracy:.4f}")
