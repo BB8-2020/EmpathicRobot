@@ -1,2 +1,2 @@
-fer
-opencv-python
+numpy
+tensorflow
