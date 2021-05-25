@@ -1,2 +1,4 @@
 numpy
 tensorflow
+fer
+opencv2-python
