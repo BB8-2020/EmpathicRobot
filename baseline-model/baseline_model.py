@@ -1,10 +1,8 @@
 """Baseline model using tensorflow. Consists of 3 layers and should only recognize if someone is happy or not."""
-from tensorflow import keras
 from tensorflow.keras import layers, utils
 import json
 import numpy as np
 from typing import Tuple
-import os 
 import tensorflow as tf
 from tensorflow import keras
 
@@ -92,7 +90,7 @@ def create_model() -> keras.Sequential:
     return model
 
 
-def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float, save: bool =True) -> keras.callbacks:
+def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float, save: bool = True) -> keras.callbacks:
     """
     Train the model using the trainsets created in create_dataset().
 
@@ -119,12 +117,9 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
             The callback where all the training results are saved in. This is used for plotting the training results.
     """
     x_train, y_train = create_datasets(frame, 'formatted_pixels', 'happy')
-    
     history = keras.callbacks.History()
-    
     if save:
         checkpoint_path = "training/cp.ckpt"
-        checkpoint_dir = os.path.dirname(checkpoint_path)
 
         # Create a callback that saves the model's weights
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
@@ -132,29 +127,24 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
                                                          verbose=1)
 
         model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history, cp_callback])
-        
     else:
-        
         model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history])
-
 
     return history
 
-def compile_model(model:keras.Sequential):
+
+def compile_model(model: keras.Sequential):
     """
     Compile the model using Adam and CategoricalCrossentropy.
-    
+
     Parameters
     ----------
         model: tensorflow keras model
                 the tensorflow keras model that has been made in create_model().
     """
-    
-    
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
                   optimizer=keras.optimizers.Adam(),
                   metrics=["accuracy"])
-    
 
 
 def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
