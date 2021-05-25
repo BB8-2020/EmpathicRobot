@@ -59,14 +59,18 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
         y_target
             set which contains the 7 possible targets.
     """
+
     feature_lst = list(frame[feature].values())
+    print((feature_lst))
     x_feature = np.array(feature_lst).astype("float32")
     # an image is 48x48 pixels
-    x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
+    x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
+   
     x_feature /= 255
     target_lst = np.array(list(frame[target].values()))
     # 7 categories
     y_target = utils.to_categorical(target_lst, 7)
+    print('x_feature', x_feature[0], 'y_target', y_target[0])
     return x_feature, y_target
 
 
@@ -80,7 +84,7 @@ def create_model() -> keras.Sequential:
             tensorflow keras model that has been build as seen below.
     """
     model = keras.Sequential()
-    model.add(Conv2D(input_shape=(48, 48, 1), filters=64, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(input_shape=(128, 128, 1), filters=32, kernel_size=(3, 3), padding="same", activation="relu"))
     model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))
     model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
     model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu"))
