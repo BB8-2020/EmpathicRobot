@@ -1,10 +1,11 @@
 """First version of the classification model using VGG16 layout."""
 import pickle
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
 import tensorflow
+from pandas import DataFrame
+from typing import Tuple, Any
 from tensorflow import keras
 from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
@@ -12,12 +13,12 @@ from tensorflow.keras.optimizers import Adam
 
 def read_data(path: str) -> dict:
     """
-    Read an json file from a given path.
+    Read an pickle file from a given path.
 
     Parameters
     ----------
         path: str
-            Path to the correct json file.
+            Path to the correct pickle file.
 
     Raises
     ------
@@ -27,7 +28,7 @@ def read_data(path: str) -> dict:
     Return
     ------
         frame
-            json data that has been converted to an dictionary.
+            pickle data that has been converted to an dictionary.
     """
     try:
         data = open(str(path), 'rb')
@@ -37,14 +38,14 @@ def read_data(path: str) -> dict:
         print(f"File in this {path} does not exist")
 
 
-def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
+def create_datasets(frame: dict, feature: str, target: str) -> Tuple[Any, DataFrame]:
     """
     Create and reshape the datasets for the model. It can be used to create testsets or trainsets.
 
     Parameters
     ----------
         frame: dict
-            Json file that has been converted to a dict using read_data().
+            Pickle file that has been converted to a dict using read_data().
 
         feature: str
             string used to get the correct feature for the dataset from the frame.
@@ -64,7 +65,6 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
     x_feature = np.array(feature_lst).astype("float32")
     # an image is 48x48 pixels
     x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
-
     x_feature /= 255
     y_target = pd.get_dummies(frame[target])
     return x_feature, y_target
@@ -170,18 +170,3 @@ def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> lis
     results = model.evaluate(x_test, y_test, batch_size=batch_size)
 
     return results
-
-# Dit heb ik niet kunnen runnen vanwege mijn laptop.
-
-
-if __name__ == "__main__":
-    print(tensorflow.version)
-
-    # model = create_model()
-    # train_frame = read_data("ferPlus_data_json/train.json")
-    # history = train_model(model, train_frame, 64, 10, 0.2)
-    #
-    # test_frame = read_data("ferPlus_data_json/test.json")
-    # loss, accuracy = evaluate_model(model, test_frame, 256)
-    # print(f"Test loss: {loss:.4f}")
-    # print(f"Test accuracy: {accuracy:.4f}")
