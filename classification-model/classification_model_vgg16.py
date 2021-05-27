@@ -3,9 +3,9 @@ import pickle
 from typing import Tuple
 
 import numpy as np
+import pandas as pd
 import tensorflow
 from tensorflow import keras
-from tensorflow.keras import utils
 from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
 
@@ -30,8 +30,8 @@ def read_data(path: str) -> dict:
             json data that has been converted to an dictionary.
     """
     try:
-        data = open(str(path))
-        frame = pickle.loads(data.read())
+        data = open(str(path), 'rb')
+        frame = pickle.load(data)
         return frame
     except OSError:
         print(f"File in this {path} does not exist")
@@ -60,17 +60,13 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
             set which contains the 7 possible targets.
     """
 
-    feature_lst = list(frame[feature].values())
-    print((feature_lst))
+    feature_lst = list(frame[feature])
     x_feature = np.array(feature_lst).astype("float32")
     # an image is 48x48 pixels
     x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
-   
+
     x_feature /= 255
-    target_lst = np.array(list(frame[target].values()))
-    # 7 categories
-    y_target = utils.to_categorical(target_lst, 7)
-    print('x_feature', x_feature[0], 'y_target', y_target[0])
+    y_target = pd.get_dummies(frame[target])
     return x_feature, y_target
 
 
