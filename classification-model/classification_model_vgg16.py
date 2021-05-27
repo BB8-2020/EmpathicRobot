@@ -1,5 +1,5 @@
 """First version of the classification model using VGG16 layout."""
-import json
+import pickle
 from typing import Tuple
 
 import numpy as np
@@ -31,7 +31,7 @@ def read_data(path: str) -> dict:
     """
     try:
         data = open(str(path))
-        frame = json.loads(data.read())
+        frame = pickle.loads(data.read())
         return frame
     except OSError:
         print(f"File in this {path} does not exist")
