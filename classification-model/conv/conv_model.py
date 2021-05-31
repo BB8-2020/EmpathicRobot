@@ -41,22 +41,22 @@ def build_model():
         keras.Input(shape=(48, 48, 1)),
          layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu',padding= "same"),
+         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding= "same"),
          layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
-         layers.MaxPooling2D(pool_size=(2, 2), padding = "same", strides=(2,2)),
+         layers.MaxPooling2D(pool_size=(2, 2), padding="same", strides=(2,2)),
          layers.Dropout(0.2, ),
-        # layers.BatchNormalization(axis=-1),
+
+        layers.BatchNormalization(axis=-1),
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
-         layers.MaxPooling2D(pool_size=(2, 2), padding= 'same', strides=(2,2)),
+         layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
          layers.Dropout(0.2, ),
 
          layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
 
-        # layers.BatchNormalization(axis=-1),
-
+        layers.BatchNormalization(axis=-1),
         layers.MaxPooling2D(pool_size=(2, 2), padding = 'same',strides=(2,2)),
         layers.Dropout(0.2,),
 
@@ -64,7 +64,7 @@ def build_model():
         layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
         layers.Dropout(0.2),
         layers.Flatten(),
-        layers.Dense(1024, activation="softmax"),
+        layers.Dense(1024),
         layers.Dropout(0.2),
         layers.Dense(7, activation="softmax")])
      return model
@@ -154,8 +154,9 @@ def compile_model(model: keras.Sequential):
         model: tensorflow keras model
                 the tensorflow keras model that has been made in create_model().
     """
+    opt = keras.optimizers.Adam(learning_rate=0.01)
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
-                  optimizer=keras.optimizers.Adam(),
+                  optimizer=opt,
                   metrics=["accuracy"])
 
 
