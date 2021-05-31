@@ -1,8 +1,9 @@
-import json
+
+import pickle
 from typing import Tuple
 
+import pandas as pd
 import tensorflow as tf
-from tensorflow.keras import layers, utils
 import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -95,7 +96,7 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
    feature_lst = list(frame[feature])
    x_feature = np.array(feature_lst).astype("float32")
    # an image is 48x48 pixels
-   x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
+   x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
    x_feature /= 255
    y_target = pd.get_dummies(frame[target])
    return x_feature, y_target
