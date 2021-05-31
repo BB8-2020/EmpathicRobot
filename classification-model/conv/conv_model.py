@@ -44,29 +44,34 @@ def build_model():
          layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding= "same"),
          layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
          layers.MaxPooling2D(pool_size=(2, 2), padding="same", strides=(2,2)),
+         layers.BatchNormalization(axis=-1),
          layers.Dropout(0.2, ),
 
-        layers.BatchNormalization(axis=-1),
+
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
          layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
+         layers.BatchNormalization(axis=-1),
          layers.Dropout(0.2, ),
 
          layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
          layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
 
-        layers.BatchNormalization(axis=-1),
+
         layers.MaxPooling2D(pool_size=(2, 2), padding = 'same',strides=(2,2)),
+        layers.BatchNormalization(axis=-1),
         layers.Dropout(0.2,),
 
         layers.Conv2D(kernel_size=(3, 3), filters=256, activation='relu', padding= "same"),
         layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
+        layers.BatchNormalization(axis=-1),
+
         layers.Dropout(0.2),
         layers.Flatten(),
         layers.Dense(1024),
         layers.Dropout(0.2),
-        layers.Dense(7, activation="softmax")])
+        layers.Dense(7, kernel_regularizer=tf.keras.regularizers.l2(0.2),activation="softmax")])
      return model
 
 
