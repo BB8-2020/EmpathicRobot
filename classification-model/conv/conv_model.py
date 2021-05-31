@@ -161,7 +161,7 @@ def compile_model(model: keras.Sequential):
     """
     opt = keras.optimizers.Adam(learning_rate=0.01)
     model.compile(loss=keras.losses.CategoricalCrossentropy(),
-                  optimizer=opt,
+                  optimizer=keras.optimizer.sgd,
                   metrics=["accuracy"])
 
 
