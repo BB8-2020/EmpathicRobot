@@ -3,7 +3,7 @@ import pickle
 
 import numpy as np
 import pandas as pd
-import tensorflow
+import tensorflow as tf
 from pandas import DataFrame
 from typing import Tuple, Any
 from tensorflow import keras
@@ -66,6 +66,9 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[Any, DataFr
     # an image is 48x48 pixels
     x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
     x_feature /= 255
+    x_feature = tf.image.grayscale_to_rgb(
+        tf.convert_to_tensor(x_feature),
+        name=None)
     y_target = pd.get_dummies(frame[target])
     return x_feature, y_target
 
@@ -80,31 +83,32 @@ def create_model() -> keras.Sequential:
             tensorflow keras model that has been build as seen below.
     """
     model = keras.Sequential()
-    model.add(Conv2D(input_shape=(128, 128, 1), filters=32, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))
+    model.add(Conv2D(input_shape=(128, 128, 1), filters=64, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu", strides=(1,1)))
     model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
-    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
-
-    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=128, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
     model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
 
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=256, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
     model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
 
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
-    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
+    model.add(Conv2D(filters=512, kernel_size=(3, 3), padding="same", activation="relu", strides=(1,1)))
     model.add(MaxPool2D(pool_size=(2, 2), strides=(2, 2)))
 
     model.add(Flatten())
     model.add(Dense(units=4096, activation="relu"))
     model.add(Dense(units=4096, activation="relu"))
+    model.add(Dense(units=1000, activation='relu'))
     model.add(Dense(units=7, activation="softmax"))
 
     return model
