@@ -28,11 +28,11 @@ def read_data(path: str) -> dict:
            json data that has been converted to an dictionary.
    """
    try:
-      data = open(str(path))
-      frame = json.loads(data.read())
-      return frame
+       data = open(str(path), 'rb')
+       frame = pickle.load(data)
+       return frame
    except OSError:
-      print(f"File in this {path} does not exist")
+       print(f"File in this {path} does not exist")
 
 
 def build_model():
@@ -91,15 +91,13 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray,
        y_target
            set which contains the 2 possible targets.
    """
-   feature_lst = list(frame[feature].values())
 
+   feature_lst = list(frame[feature])
    x_feature = np.array(feature_lst).astype("float32")
    # an image is 48x48 pixels
-   x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
+   x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
    x_feature /= 255
-   target_lst = np.array(list(frame[target].values()))
-   # 2 categories: happy and not happy
-   y_target = utils.to_categorical(target_lst, 7)
+   y_target = pd.get_dummies(frame[target])
    return x_feature, y_target
 
 
@@ -180,7 +178,7 @@ def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> lis
         results
             list of the results of the model after testing it with te testsets.
     """
-    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'happy')
+    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'emotion')
     results = model.evaluate(x_test, y_test, batch_size=batch_size)
 
     return results
