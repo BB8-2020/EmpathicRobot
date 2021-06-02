@@ -90,7 +90,19 @@ def save_model_and_weights(model, test_acc):
 
 
 def save_all_model(model, test_acc):
-    model.save(f'saveed_mode{test_acc}')
+    test_acc = int(test_acc * 10000)
+    model.save(f'saved_model{test_acc}')
+
+
+def save_model_to_lite(test_acc):
+    test_acc = int(test_acc * 10000)
+    # path to the SavedModel directory
+    converter = tf.lite.TFLiteConverter.from_saved_model(f'saved_model{test_acc}')
+    tflite_model = converter.convert()
+
+    # Save the model.
+    with open('lite_model.tflite', 'wb') as f:
+        f.write(tflite_model)
 
 
 def load_model_and_weights(model_path, weights_path):
@@ -135,6 +147,8 @@ def run_model():
 
     plot_acc_loss(history)
     save_model_and_weights(model, test_acc)
+    save_all_model(model, test_acc)
+    save_model_to_lite(test_acc)
 
 
 if __name__ == "__main__":
