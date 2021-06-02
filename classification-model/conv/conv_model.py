@@ -1,192 +1,141 @@
-
-import pickle
-from typing import Tuple
-
-import pandas as pd
 import tensorflow as tf
-import numpy as np
-from tensorflow import keras
-from tensorflow.keras import layers
+from tensorflow.keras.models import Sequential, model_from_json
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, Activation
+from data_prepare import *
 
 
-def read_data(path: str) -> dict:
-   """
-   Read an json file from a given path.
+def define_model(input_shape=(48, 48, 1), classes=7):
+    num_features = 64
 
-   Parameters
-   ----------
-       path: str
-           Path to the correct json file.
+    model = Sequential()
 
-   Raises
-   ------
-       OSError
-           When the wrong path is given and it can't find the file.
+    # 1st stage
+    model.add(Conv2D(num_features, kernel_size=(3, 3), input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
+    model.add(Conv2D(num_features, kernel_size=(3, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
+    model.add(Dropout(0.5))
 
-   Return
-   ------
-       frame
-           json data that has been converted to an dictionary.
-   """
-   try:
-       data = open(str(path), 'rb')
-       frame = pickle.load(data)
-       return frame
-   except OSError:
-       print(f"File in this {path} does not exist")
+    # 2nd stage
+    model.add(Conv2D(num_features, (3, 3), activation='relu'))
+    model.add(Conv2D(num_features, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
+    # 3rd stage
+    model.add(Conv2D(2 * num_features, kernel_size=(3, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
+    model.add(Conv2D(2 * num_features, kernel_size=(3, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
 
-def build_model():
-     model = keras.Sequential([
-        keras.Input(shape=(48, 48, 1)),
-         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding= "same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=32, activation='relu', padding="same"),
-         layers.MaxPooling2D(pool_size=(2, 2), padding="same", strides=(2,2)),
-         layers.BatchNormalization(axis=-1),
-         layers.Dropout(0.2, ),
+    # 4th stage
+    model.add(Conv2D(2 * num_features, (3, 3), activation='relu'))
+    model.add(Conv2D(2 * num_features, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
+    # 5th stage
+    model.add(Conv2D(4 * num_features, kernel_size=(3, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
+    model.add(Conv2D(4 * num_features, kernel_size=(3, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation(activation='relu'))
 
-         layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=64, activation='relu', padding="same"),
-         layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
-         layers.BatchNormalization(axis=-1),
-         layers.Dropout(0.2, ),
+    model.add(Flatten())
 
-         layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
-         layers.Conv2D(kernel_size=(3, 3), filters=128, activation='relu', padding="same"),
+    # Fully connected neural networks
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(0.2))
 
+    model.add(Dense(classes, activation='softmax'))
 
-        layers.MaxPooling2D(pool_size=(2, 2), padding = 'same',strides=(2,2)),
-        layers.BatchNormalization(axis=-1),
-        layers.Dropout(0.2,),
-
-        layers.Conv2D(kernel_size=(3, 3), filters=256, activation='relu', padding= "same"),
-        layers.MaxPooling2D(pool_size=(2, 2), padding='same', strides=(2,2)),
-        layers.BatchNormalization(axis=-1),
-
-        layers.Dropout(0.2),
-        layers.Flatten(),
-        layers.Dense(1024),
-        layers.Dropout(0.2),
-        layers.Dense(7, kernel_regularizer=tf.keras.regularizers.l2(0.2),activation="softmax")])
-     return model
+    return model
 
 
-def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
-   """
-   Create and reshape the datasets for the model. It can be used to create testsets or trainsets.
+def plot_acc_loss(history):
+    # Plot accuracy graph
+    plt.plot(history.history['accuracy'], label='accuracy')
+    plt.plot(history.history['val_accuracy'], label='val_accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('accuracy')
+    plt.ylim([0, 1.0])
+    plt.legend(loc='upper left')
+    plt.show()
 
-   Parameters
-   ----------
-       frame: dict
-           Json file that has been converted to a dict using read_data().
-
-       feature: str
-           string used to get the correct feature for the dataset from the frame.
-
-       target: str
-           string used to get the correct target for the dataset from the frame.
-
-   Return
-   ------
-       x_feature
-           set which contains the features (in this case pictures) for the model.
-       y_target
-           set which contains the 2 possible targets.
-   """
-
-   feature_lst = list(frame[feature])
-   x_feature = np.array(feature_lst).astype("float32")
-   # an image is 48x48 pixels
-   x_feature = x_feature.reshape(x_feature.shape[0], 48, 48, 1)
-   x_feature /= 255
-   y_target = pd.get_dummies(frame[target])
-   return x_feature, y_target
+    # Plot loss graph
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    # plt.ylim([0, 3.5])
+    plt.legend(loc='upper right')
+    plt.show()
 
 
-def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float, save: bool = True) -> keras.callbacks:
-    """
-    Train the model using the trainsets created in create_dataset().
-
-    Parameters
-    ----------
-        model: tensorflow keras model
-            the tensorflow keras model that has been made in create_model().
-
-        frame: dict
-            dictionary that is used to create the trainsets in create_datasets().
-
-        batch_size: int
-            int that determines the batch_size that is used for training the model.
-
-        epochs: int
-            int that determines the amount of epochs which is also used for training the model.
-
-        vs: float
-            float that determines the validation_split.
-
-    Return
-    ------
-        history
-            The callback where all the training results are saved in. This is used for plotting the training results.
-    """
-    x_train, y_train = create_datasets(frame, 'formatted_pixels', 'emotion')
-    history = keras.callbacks.History()
-    if save:
-        checkpoint_path = "training/cp.ckpt"
-
-        # Create a callback that saves the model's weights
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                         save_weights_only=True,
-                                                         verbose=1)
-
-        model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history, cp_callback])
-    else:
-        model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=vs, callbacks=[history])
-
-    return history
+def save_model_and_weights(model, test_acc):
+    # Serialize and save model to JSON
+    test_acc = int(test_acc * 10000)
+    # model_json = model.to_json()
+    model_json = model.save()
+    with open('Saved-Models\\model' + str(test_acc) + '.json', 'w') as json_file:
+        json_file.write(model_json)
+    # Serialize and save weights to JSON
+    model.save_weights('Saved-Models\\model' + str(test_acc) + '.h5')
+    print('Model and weights are saved in separate files.')
 
 
-def compile_model(model: keras.Sequential):
-    """
-    Compile the model using Adam and CategoricalCrossentropy.
-
-    Parameters
-    ----------
-        model: tensorflow keras model
-                the tensorflow keras model that has been made in create_model().
-    """
-    opt = keras.optimizers.Adam(learning_rate=0.01)
-    model.compile(loss=keras.losses.CategoricalCrossentropy(),
-                  optimizer=keras.optimizer.sgd,
-                  metrics=["accuracy"])
+def save_all_model(model, test_acc):
+    model.save(f'saveed_mode{test_acc}')
 
 
-def evaluate_model(model: keras.Sequential, frame: dict, batch_size: int) -> list:
-    """
-    Test the model using testsets created in create_datasets.
+def load_model_and_weights(model_path, weights_path):
+    # Loading JSON model
+    json_file = open(model_path, 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = model_from_json(loaded_model_json)
 
-    Parameters
-    ----------
-        model: tensorflow keras model
-            the tensorflow keras model that has been made in create_model().
+    # Loading weights
+    model.load_weights(weights_path)
+    model.compile(optimizer=tf.keras.optimizers.Adam, loss='binary_crossentropy', metrics=['accuracy'])
+    print('Model and weights are loaded and compiled.')
 
-        frame: dict
-            dictionary that is used to create the testsets in create_datasets().
 
-        batch_size: int
-            int that determines the batch_size that is used for evaluating the model.
+def run_model():
+    fer_classes = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear']
 
-    Return
-    ------
-        results
-            list of the results of the model after testing it with te testsets.
-    """
-    x_test, y_test = create_datasets(frame, 'formatted_pixels', 'emotion')
-    results = model.evaluate(x_test, y_test, batch_size=batch_size)
+    X, y = preprocess_data()
+    X, y = clean_data_and_normalize(X, y)
+    x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
+    datagen = data_augmentation(x_train)
 
-    return results
+    epochs = 1
+    batch_size = 64
 
+    print("X_train shape: " + str(x_train.shape))
+    print("Y_train shape: " + str(y_train.shape))
+    print("X_test shape: " + str(x_test.shape))
+    print("Y_test shape: " + str(y_test.shape))
+    print("X_val shape: " + str(x_val.shape))
+    print("Y_val shape: " + str(y_val.shape))
+
+    # Training model from scratch
+    model = define_model(input_shape=x_train[0].shape, classes=len(fer_classes))
+    model.summary()
+    model.compile(optimizer=tf.keras.optimizers.Adam(lr=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
+    history = model.fit(datagen.flow(x_train, y_train, batch_size=batch_size), epochs=epochs,
+                        steps_per_epoch=len(x_train) // batch_size,
+                        validation_data=(x_val, y_val), verbose=2)
+    test_loss, test_acc = model.evaluate(x_test, y_test, batch_size=batch_size)
+
+    plot_acc_loss(history)
+    save_model_and_weights(model, test_acc)
+
+
+if __name__ == "__main__":
+    run_model()
