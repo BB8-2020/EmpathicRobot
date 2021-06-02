@@ -2,7 +2,7 @@
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras import Input
 import tensorflow as tf
-import classification_model_vgg16 as cm_16
+import vgg16 as cm_16
 
 """"The implementation below is a simple example of using the file application in keras.
 After this, it must be investigated which version and how we want to implement VGG16 exactly."""

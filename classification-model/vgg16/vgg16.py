@@ -64,7 +64,7 @@ def create_datasets(frame: dict, feature: str, target: str) -> Tuple[Any, DataFr
     feature_lst = list(frame[feature])
     x_feature = np.array(feature_lst).astype("float32")
     # an image is 48x48 pixels
-    x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 1)
+    x_feature = x_feature.reshape(x_feature.shape[0], 128, 128, 3)
     x_feature /= 255
     x_feature = tf.image.grayscale_to_rgb(
         tf.convert_to_tensor(x_feature),
