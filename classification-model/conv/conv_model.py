@@ -91,6 +91,7 @@ def save_model_and_weights(model, test_acc):
 
 def save_all_model(model, test_acc):
     test_acc = int(test_acc * 10000)
+    print(test_acc, 'hoi')
     model.save(f'saved_model{test_acc}')
 
 
@@ -103,6 +104,7 @@ def save_model_to_lite(test_acc):
     # Save the model.
     with open('lite_model.tflite', 'wb') as f:
         f.write(tflite_model)
+    print('finished')
 
 
 def load_model_and_weights(model_path, weights_path):
@@ -118,13 +120,13 @@ def load_model_and_weights(model_path, weights_path):
     print('Model and weights are loaded and compiled.')
 
 
-def run_model():
+def run_model(datagen, x_train, y_train, x_val, y_val, x_test, y_test):
     fer_classes = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear']
 
-    X, y = preprocess_data()
-    X, y = clean_data_and_normalize(X, y)
-    x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
-    datagen = data_augmentation(x_train)
+#     X, y = preprocess_data()
+#     X, y = clean_data_and_normalize(X, y)
+#     x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
+#     datagen = data_augmentation(x_train)
 
     epochs = 1
     batch_size = 64
