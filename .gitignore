@@ -141,9 +141,13 @@ Backup of *.doc*
 ~$*.ppt*
 
 # Large files
-.zip
-.rar
-.csv
+*.zip
+*.rar
+*.csv
+*.json
+*.pkl
+*.pickle
+*.pbz2
 
 # Keep structure
 !*.keep

@@ -15,6 +15,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        export DEVELOPER=true
         pip install .
     - name: Lint with flake8
       run: |
