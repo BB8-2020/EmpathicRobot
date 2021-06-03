@@ -145,9 +145,6 @@ Backup of *.doc*
 *.rar
 *.csv
 *.json
-*.pkl
-*.pickle
-*.pbz2
 
 # Keep structure
 !*.keep
