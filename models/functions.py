@@ -8,7 +8,7 @@ from tensorflow.keras.models import model_from_json
 
 def plot_acc_loss(history: tf.keras.Callabels) -> None:
     """
-     plot the results of a model using the history od it.
+     Plot the results of a model using the history od it.
     :history: numpy array
     """
     # Plot accuracy graph
@@ -32,7 +32,7 @@ def plot_acc_loss(history: tf.keras.Callabels) -> None:
 
 def save_model_and_weights(model: tf.keras.Sequential, test_acc: float) -> None:
     """
-    save the model and the wights separate to a JSON file.
+    Save the model and the wights separate to a JSON file.
     this could be used later to test and use the model.
 
     :model: the model that should be saved
@@ -45,7 +45,7 @@ def save_model_and_weights(model: tf.keras.Sequential, test_acc: float) -> None:
     if not os.mkdir('Saved-Models'):
         try:
             os.makedirs('Saved-Models')
-        except OSError as e:
+        except OSError:
             raise OSError("Directory does not exist!")
 
     with open('Saved-Models\\model' + str(test_acc) + '.json', 'w') as json_file:
@@ -58,7 +58,7 @@ def save_model_and_weights(model: tf.keras.Sequential, test_acc: float) -> None:
 
 def save_all_model(model: tf.keras.Sequential, test_acc: float) -> None:
     """
-    save the whole model using .save from keras.
+    Save the whole model using .save from keras.
     this could be used to convert the model to a lit version.
 
     :model: the model that should be saved
@@ -68,7 +68,7 @@ def save_all_model(model: tf.keras.Sequential, test_acc: float) -> None:
     if not os.mkdir('Saved-Models'):
         try:
             os.makedirs('Saved-Models')
-        except OSError as e:
+        except OSError:
             raise OSError("Directory does not exist!")
 
     test_acc = int(test_acc * 10000)
@@ -78,7 +78,7 @@ def save_all_model(model: tf.keras.Sequential, test_acc: float) -> None:
 
 def save_model_to_lite(test_acc: float) -> None:
     """
-    save the model into a lite version.
+    Save the model into a lite version.
     that could be used in the android app.
     :test_acc: float
     """
@@ -99,7 +99,7 @@ def save_model_to_lite(test_acc: float) -> None:
 
 def load_model_and_weights(model_path: str, weights_path: str) -> None:
     """
-    load a saved model form the directory and upload the weights to the model.
+    Load a saved model form the directory and upload the weights to the model.
     :model_path: string path to the saved model.
     :weights_path: string path to the saved wights.
     """
