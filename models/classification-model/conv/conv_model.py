@@ -1,9 +1,9 @@
-import tensorflow as tf
-from tensorflow.keras.models import Sequential, model_from_json
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, Activation
-# from data_prepare import *
 import os
+
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, Activation
+from tensorflow.keras.models import Sequential, model_from_json
 
 
 def define_model(input_shape=(48, 48, 1), classes=7):
@@ -59,66 +59,8 @@ def define_model(input_shape=(48, 48, 1), classes=7):
     return model
 
 
-def plot_acc_loss(history):
-    # Plot accuracy graph
-    plt.plot(history.history['accuracy'], label='accuracy')
-    plt.plot(history.history['val_accuracy'], label='val_accuracy')
-    plt.xlabel('Epoch')
-    plt.ylabel('accuracy')
-    plt.ylim([0, 1.0])
-    plt.legend(loc='upper left')
-    plt.show()
-
-    # Plot loss graph
-    plt.plot(history.history['loss'], label='loss')
-    plt.plot(history.history['val_loss'], label='val_loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    # plt.ylim([0, 3.5])
-    plt.legend(loc='upper right')
-    plt.show()
 
 
-def save_model_and_weights(model, test_acc):
-    # Serialize and save model to JSON
-    test_acc = int(test_acc * 10000)
-    model_json = model.to_json()
-    if not os.mkdir('Saved-Models'):
-        os.makedirs('Saved-Models')
-    with open('Saved-Models\\model' + str(test_acc) + '.json', 'w') as json_file:
-        json_file.write(model_json)
-    # Serialize and save weights to JSON
-    model.save_weights('Saved-Models\\model' + str(test_acc) + '.h5')
-    print('Model and weights are saved in separate files.')
-
-
-def save_all_model(model, test_acc):
-    test_acc = int(test_acc * 10000)
-    model.save(f'saved_model{test_acc}')
-
-
-def save_model_to_lite(test_acc):
-    test_acc = int(test_acc * 10000)
-    # path to the SavedModel directory
-    converter = tf.lite.TFLiteConverter.from_saved_model(f'saved_model{test_acc}')
-    tflite_model = converter.convert()
-
-    # Save the model.
-    with open('lite_model.tflite', 'wb') as f:
-        f.write(tflite_model)
-
-
-def load_model_and_weights(model_path, weights_path):
-    # Loading JSON model
-    json_file = open(model_path, 'r')
-    loaded_model_json = json_file.read()
-    json_file.close()
-    model = model_from_json(loaded_model_json)
-
-    # Loading weights
-    model.load_weights(weights_path)
-    model.compile(optimizer=tf.keras.optimizers.Adam, loss='binary_crossentropy', metrics=['accuracy'])
-    print('Model and weights are loaded and compiled.')
 
 
 def run_model(*data):
