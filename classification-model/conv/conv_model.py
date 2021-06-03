@@ -1,7 +1,9 @@
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, model_from_json
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, Activation
-from data_prepare import *
+# from data_prepare import *
+import os
+import matplotlib.pyplot as plt
 
 
 def define_model(input_shape=(48, 48, 1), classes=7):
@@ -80,8 +82,9 @@ def plot_acc_loss(history):
 def save_model_and_weights(model, test_acc):
     # Serialize and save model to JSON
     test_acc = int(test_acc * 10000)
-    # model_json = model.to_json()
-    model_json = model.save()
+    model_json = model.to_json()
+    if not os.mkdir('Saved-Models'):
+        os.makedirs('Saved-Models')
     with open('Saved-Models\\model' + str(test_acc) + '.json', 'w') as json_file:
         json_file.write(model_json)
     # Serialize and save weights to JSON
@@ -91,7 +94,6 @@ def save_model_and_weights(model, test_acc):
 
 def save_all_model(model, test_acc):
     test_acc = int(test_acc * 10000)
-    print(test_acc, 'hoi')
     model.save(f'saved_model{test_acc}')
 
 
@@ -104,7 +106,6 @@ def save_model_to_lite(test_acc):
     # Save the model.
     with open('lite_model.tflite', 'wb') as f:
         f.write(tflite_model)
-    print('finished')
 
 
 def load_model_and_weights(model_path, weights_path):
@@ -120,14 +121,14 @@ def load_model_and_weights(model_path, weights_path):
     print('Model and weights are loaded and compiled.')
 
 
-def run_model(datagen, x_train, y_train, x_val, y_val, x_test, y_test):
+def run_model(*data):
     fer_classes = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear']
 
 #     X, y = preprocess_data()
 #     X, y = clean_data_and_normalize(X, y)
 #     x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
 #     datagen = data_augmentation(x_train)
-
+    datagen, x_train, y_train, x_val, y_val, x_test, y_test = data
     epochs = 1
     batch_size = 64
 
@@ -151,7 +152,3 @@ def run_model(datagen, x_train, y_train, x_val, y_val, x_test, y_test):
     save_model_and_weights(model, test_acc)
     save_all_model(model, test_acc)
     save_model_to_lite(test_acc)
-
-
-if __name__ == "__main__":
-    run_model()
