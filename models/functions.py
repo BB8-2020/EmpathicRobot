@@ -6,7 +6,11 @@ import tensorflow as tf
 from tensorflow.keras.models import model_from_json
 
 
-def plot_acc_loss(history: tf.keras.Callabels) -> None:
+if not os.path.exists('Saved-Models'):
+    os.makedirs('Saved-Models')
+
+
+def plot_acc_loss(history: tf.keras.callbacks) -> None:
     """
      Plot the results of a model using the history od it.
     :history: numpy array
@@ -42,12 +46,6 @@ def save_model_and_weights(model: tf.keras.Sequential, test_acc: float) -> None:
     test_acc = int(test_acc * 10000)
     model_json = model.to_json()
 
-    if not os.mkdir('Saved-Models'):
-        try:
-            os.makedirs('Saved-Models')
-        except OSError:
-            raise OSError("Directory does not exist!")
-
     with open('Saved-Models\\model' + str(test_acc) + '.json', 'w') as json_file:
         json_file.write(model_json)
 
@@ -64,13 +62,6 @@ def save_all_model(model: tf.keras.Sequential, test_acc: float) -> None:
     :model: the model that should be saved
     :test_acc: float
     """
-
-    if not os.mkdir('Saved-Models'):
-        try:
-            os.makedirs('Saved-Models')
-        except OSError:
-            raise OSError("Directory does not exist!")
-
     test_acc = int(test_acc * 10000)
     model.save(f'saved_all_model{test_acc}')
     print('Model is saved in a file.')
@@ -117,3 +108,14 @@ def load_model_and_weights(model_path: str, weights_path: str) -> None:
         print('Model and weights are loaded and compiled.')
     else:
         raise OSError('File or directory does not exist!')
+
+
+def save_model_summary(model: tf.keras.Sequential, model_name: str) -> None:
+    """
+    Save the summery of a model into a txt file.
+
+    :model: the model that should be saved
+    :model_name: name of model
+    """
+    with open(f'modelsummary{model_name}.jpg', 'w') as f:
+        model.summary(print_fn=lambda x: f.write(x + '\n'))
