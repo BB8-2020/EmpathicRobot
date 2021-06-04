@@ -81,3 +81,13 @@ def show_augmented_images(datagen, x_train, y_train):
         plt.imshow(np.squeeze(it.next()[0][0]), cmap='gray')
         # plt.xlabel(class_names[y_train[i]])
     plt.show()
+
+def show_images(images):
+    plt.figure(figsize=(10, 7))
+    for i in range(25):
+        plt.subplot(5, 5, i + 1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(np.squeeze(images[i]), cmap='gray')
+    plt.show()
