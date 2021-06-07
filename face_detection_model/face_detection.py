@@ -25,7 +25,6 @@ def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
     """
     (x, y, width, height) = face
     frame_of_face = image[y: y + height, x: x + width]
-
     return frame_of_face
 
 
