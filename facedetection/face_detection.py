@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # load classifier from file
-face_cascade = cv2.CascadeClassifier(r'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 
 def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
@@ -13,7 +13,7 @@ def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
     Parameters
     ----------
         image: np.ndarray
-            An image in numpy array format
+            An image in numpy array format.
 
         face: np.ndarray
             Array that contains the point where te face starts and the width and height of the face.
@@ -21,7 +21,7 @@ def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
     Return
     ------
         frame_of_face
-            An image in numpy array format that is just the face
+            An image in numpy array format that is just the face.
     """
     (x, y, width, height) = face
     frame_of_face = image[y: y + height, x: x + width]
@@ -35,12 +35,12 @@ def reshape_image(image: np.ndarray) -> np.ndarray:
     Parameters
     ----------
         image: np.ndarray
-            An image that needs to be reshaped to 48 x 48 pixels
+            An image that needs to be reshaped to 48 x 48 pixels.
 
     Return
     ------
         reshaped_frame
-            The image reshaped to 48 x 48 pixels
+            The image reshaped to 48 x 48 pixels.
     """
     reshaped_frame = cv2.resize(image, (48, 48))
 
@@ -54,11 +54,11 @@ def convert_to_bytes(image: np.ndarray) -> bytes:
     Parameters
     ----------
         image: np.ndarray
-
+            An image that needs to be converted to bytes.
     Return
     ------
         byte_im
-            String of bytes containing the image
+            String of bytes containing the image.
     """
     # convert np.array to one-dimensional numpy array
     _, im_buf_arr = cv2.imencode(".png", image)
