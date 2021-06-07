@@ -30,7 +30,7 @@ def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
 
 def reshape_image(image: np.ndarray) -> np.ndarray:
     """
-    Reshapes the given image to a 48 x 48 pixels image
+    Reshapes the given image to a 48 x 48 pixels image.
 
     Parameters
     ----------
@@ -70,22 +70,22 @@ def convert_to_bytes(image: np.ndarray) -> bytes:
 
 def face_from_image(img_file: str) -> bytes:
     """
-        Reads image, detects faces, picks closest face then crops the image to just the face, reshapes the image
-        and returns it as bytes.
+    Read image, detects faces, picks closest face then crops the image to just the face
+    reshapes the image and returns it as bytes.
 
-        Parameters
-        ----------
-            img_file: str
-                Path to image file.
+    Parameters
+    ----------
+        img_file: str
+            Path to image file.
 
-        Raises
-        ------
-            Raises error if no face can be detected.
+    Raises
+    ------
+        Raises error if no face can be detected.
 
-        Return
-        ------
-            byte_im
-                An image of a face in a 48 x 48 image in byte format.
+    Return
+    ------
+        byte_im
+            An image of a face in a 48 x 48 image in byte format.
     """
     # reads image
     image = cv2.imread(img_file)
