@@ -30,27 +30,22 @@ def data_augmentation(x_train):
         width_shift_range=shift)
     datagen.fit(x_train)
     return datagen
-
-
-def show_augmented_images(datagen, x_train, y_train):
-    it = datagen.flow(x_train, y_train, batch_size=1)
+    
+    
+def show_images(x_train, y_train, datagen=None):
+    if datagen != None:
+        it = datagen.flow(x_train, y_train, batch_size=1)
     plt.figure(figsize=(10, 7))
     for i in range(25):
         plt.subplot(5, 5, i + 1)
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)
-        plt.imshow(np.squeeze(it.next()[0][0]), cmap='gray')
-        # plt.xlabel(class_names[y_train[i]])
-    plt.show()
-    
-    
-def show_images(images):
-    plt.figure(figsize=(10, 7))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(np.squeeze(images[i]), cmap='gray')
+        if datagen != None:
+            plt.imshow(np.squeeze(it.next()[0][0]), cmap='gray')
+        else:
+            plt.imshow(np.squeeze(x_train[i]), cmap='gray')
+            
+        if type(y_train[i]) == str:
+            plt.xlabel(y_train[i])
     plt.show()
