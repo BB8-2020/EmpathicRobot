@@ -1,16 +1,7 @@
-import pickle
-import os
 import numpy as np
-import pandas as pd
-from math import ceil
-from sklearn import model_selection
-import matplotlib.pyplot as plt
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Loads csv files and appends pixels to X and labels to y
-def preprocess_data():
-    data = pd.read_csv('fer2013.csv')
-    labels = pd.read_csv('fer2013new.csv')
+def preprocess_data(data, labels):
 
     orig_class_names = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt',
                         'unknown', 'NF']
@@ -47,47 +38,3 @@ def clean_data_and_normalize(X, y):
     X /= 255.0
 
     return X, y
-
-
-def split_data(X, y):
-    test_size = ceil(len(X) * 0.1)
-
-    # Split Data
-    x_train, x_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=test_size, random_state=42)
-    x_train, x_val, y_train, y_val = model_selection.train_test_split(x_train, y_train, test_size=test_size,
-                                                                      random_state=42)
-    return x_train, y_train, x_val, y_val, x_test, y_test
-
-
-def data_augmentation(x_train):
-    shift = 0.1
-    datagen = ImageDataGenerator(
-        rotation_range=20,
-        horizontal_flip=True,
-        height_shift_range=shift,
-        width_shift_range=shift)
-    datagen.fit(x_train)
-    return datagen
-
-
-def show_augmented_images(datagen, x_train, y_train):
-    it = datagen.flow(x_train, y_train, batch_size=1)
-    plt.figure(figsize=(10, 7))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(np.squeeze(it.next()[0][0]), cmap='gray')
-        # plt.xlabel(class_names[y_train[i]])
-    plt.show()
-
-def show_images(images):
-    plt.figure(figsize=(10, 7))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(np.squeeze(images[i]), cmap='gray')
-    plt.show()
