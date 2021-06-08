@@ -1,11 +1,9 @@
 """Tests for the face detection model."""
-import os
 import numpy as np
 import pytest
 
 
 from facedetection.face_detection import crop_to_face, reshape_image, convert_to_bytes, face_from_image
-os.chdir("../tests")
 
 
 def test_crop_to_face():
