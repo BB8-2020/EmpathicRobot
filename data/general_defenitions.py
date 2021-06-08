@@ -38,7 +38,7 @@ def data_augmentation(x_train):
     
 def show_images(x_train, y_train, datagen=None):
     """Show images with a check for augmented images and check if the emotion is defined to show."""
-    if datagen != None:
+    if datagen is not None:
         it = datagen.flow(x_train, y_train, batch_size=1)
     plt.figure(figsize=(10, 7))
     for i in range(25):
@@ -46,7 +46,7 @@ def show_images(x_train, y_train, datagen=None):
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)
-        if datagen != None:
+        if datagen is not None:
             plt.imshow(np.squeeze(it.next()[0][0]), cmap='gray')
         else:
             plt.imshow(np.squeeze(x_train[i]), cmap='gray')
