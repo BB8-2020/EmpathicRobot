@@ -1,6 +1,8 @@
 """Converts image to image with just a face in byte format."""
-import cv2
+import cv2, os
 import numpy as np
+
+os.chdir("../facedetection")
 
 # load classifier from file
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -23,6 +25,7 @@ def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
         frame_of_face
             An image in numpy array format that is just the face.
     """
+    print(os.getcwd())
     (x, y, width, height) = face
     frame_of_face = image[y: y + height, x: x + width]
     return frame_of_face
