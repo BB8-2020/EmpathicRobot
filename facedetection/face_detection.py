@@ -3,10 +3,8 @@ import cv2
 import os
 import numpy as np
 
-os.chdir("../facedetection")
-
 # load classifier from file
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('../facedetection/haarcascade_frontalface_default.xml')
 
 
 def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
