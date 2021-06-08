@@ -7,11 +7,14 @@ from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 def comp_pickle_save(data, filename):
+    """Dump the incoming data in a compressed pickle file,
+    this is one of the lightest ways to save data with and keep easy access."""
     with bz2.BZ2File(filename, 'w') as f:
         cPickle.dump(data, f)
       
     
 def split_data(X, y):
+    """Split the incoming data into train, test and validation sets."""
     test_size = ceil(len(X) * 0.1)
 
     # Split Data
@@ -22,6 +25,7 @@ def split_data(X, y):
 
 
 def data_augmentation(x_train):
+    """Augment the images by rotating, flipping and shifting."""
     shift = 0.1
     datagen = ImageDataGenerator(
         rotation_range=20,
@@ -33,6 +37,7 @@ def data_augmentation(x_train):
     
     
 def show_images(x_train, y_train, datagen=None):
+    """Show images with a check for augmented images and check if the emotion is defined to show."""
     if datagen != None:
         it = datagen.flow(x_train, y_train, batch_size=1)
     plt.figure(figsize=(10, 7))
