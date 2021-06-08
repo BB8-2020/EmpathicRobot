@@ -1,5 +1,6 @@
 """Converts image to image with just a face in byte format."""
-import cv2, os
+import cv2
+import os
 import numpy as np
 
 os.chdir("../facedetection")

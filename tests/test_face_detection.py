@@ -10,7 +10,6 @@ os.chdir("../tests")
 
 def test_crop_to_face():
     """Test the crop_to_face function by checking if the output is the right shape."""
-
     image = np.load("datafacedetection/stormface.npy")
     width = 746
     height = 746
