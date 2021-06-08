@@ -1,10 +1,8 @@
 import pytest
 from models.functions import *
 
-# @pytest.mark.parametrize("non-path, non-wights", ['model1234.json', 'weights.h5'])
 
-
-def test_load_model_and_weights(model_path: str, weights_path: str):
+def test_load_model_and_weights():
     pass
 
 
@@ -21,4 +19,8 @@ def test_save_model_and_weights():
 
 
 def test_plot_acc_loss():
+    # plt.close()
+    # plot_acc_loss()
+    # assert plt.gcf().number == 1
+    #
     pass

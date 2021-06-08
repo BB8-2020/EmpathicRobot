@@ -1,13 +1,28 @@
+"""Create the model settings, compile, train and test functions."""
 import _pickle as cPickle
-import bz2
-from typing import Tuple
+from bz2 import BZ2File
+from typing import Tuple, List
 
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
 
 
-def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: int = 7):
+def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: int = 7) -> List[dict]:
+    """
+    Build the models settings using a list. This is used to train the model at the same time.
+
+    Parameters
+    ----------
+        input_shape: Tuple
+            the input shape of the model
+        num_classes: int
+            the number classes for the prediction
+    Return
+    ------
+         models_settings: list
+            the models settings
+    """
     num_features = 64
     activation_ = 'relu'
 
@@ -32,7 +47,7 @@ def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: i
                 # Fully connected neural networks
                 Flatten(), Dense(1024, activation=activation_), Dropout(0.2),
                 Dense(1024, activation=activation_), Dropout(0.2), Dense(num_classes, activation='softmax')
-                ]},
+        ]},
 
         {
         "name": "Version_2",
@@ -69,20 +84,55 @@ def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: i
     return models_settings
 
 
-def read_data(path: str, datagen: bool = False):
+def read_data(path: str, datagen: bool = False) -> Tuple:
+    """
+    Read the data out the compress pickle file and split the data into train, test and validation set.
+
+    Parameters
+    ----------
+        path: str
+            the path to the compress file
+        datagen: bool
+            check if the data argument
+    Return
+    ------
+        Tuple of the data sets
+    """
     if datagen:
-        datagen, x_train, y_train, x_val, y_val, x_test, y_test = cPickle.load(bz2.BZ2File(str(path), 'rb'))
+        datagen, x_train, y_train, x_val, y_val, x_test, y_test = cPickle.load(BZ2File(str(path), 'rb'))
         return datagen, x_train, y_train, x_val, y_val, x_test, y_test
 
     else:
-        x_train, y_train, x_val, y_val, x_test, y_test = cPickle.load(bz2.BZ2File(str(path), 'rb'))
-        return x_train,  y_train, x_val, y_val, x_test, y_test
+        x_train, y_train, x_val, y_val, x_test, y_test = cPickle.load(BZ2File(str(path), 'rb'))
+        return x_train, y_train, x_val, y_val, x_test, y_test
 
 
-def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, dategen: bool = False, *data):
+def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, dategen: bool = False, *data) ->\
+        keras.callbacks:
+    """
+    Fit model using the standaart keras fit function.
+
+    Parameters
+    ----------
+        model: keras.Sequential
+            the model that would be trained
+        batch_size: int
+            determines the batch_size that is used for training the model
+        epochs: int
+            determines the amount of epochs which is also used for training the model
+        dategen: bool
+            check if the train for the argument data
+        data
+            the datasets that has been split
+    Return
+    ------
+     history: keras.callbacks
+            where all the training results are saved in. This is used for ploty cchting the training results.
+
+    """
 
     if dategen:
-        datagen, x_train, y_train, x_val, y_val, x_test= data
+        datagen, x_train, y_train, x_val, y_val, x_test = data
         history = model.fit(datagen.flow(x_train, y_train, batch_size=batch_size),
                             epochs=epochs,
                             steps_per_epoch=len(x_train) // batch_size,
@@ -97,17 +147,36 @@ def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, 
     return history
 
 
-def compile_model(model: keras.Sequential):
+def compile_model(model: keras.Sequential) -> None:
+    """
+    Compile the model using Adam and binary crossentropy.
 
+    Parameters
+    ----------
+        model: keras.Sequential
+            the model that should be compiled
+    """
     model.compile(optimizer=tf.keras.optimizers.Adam(lr=0.0001),
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
 
-def evaluate_model(model: keras.Sequential, x_test, y_test, batch_size: int = 64):
+def evaluate_model(model: keras.Sequential, x_test: List[float], y_test: List[float], batch_size: int = 64) \
+        -> Tuple[float, float]:
+    """
+    Evaluate model using the test set.
+
+    Parameters
+    ----------
+        model: keras.Sequential
+            the model that should be test
+        x_test: list
+            the features of the test set
+        y_test: list
+            the targets of the test set
+        batch_size: int
+            determines the batch_size that is used for test the model
+
+    """
     test_loss, test_acc = model.evaluate(x_test, y_test, batch_size=batch_size)
     return test_loss, test_acc
-
-
-def main():
-    pass

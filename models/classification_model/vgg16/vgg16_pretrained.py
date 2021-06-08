@@ -15,9 +15,7 @@ x_train, y_train = cm_16.create_datasets(test_frame, 'formatted_pixels', 'emotio
 
 # Convert the grayscale images to RGB images.
 # Necessary for the pre-trained model
-x_train = tf.image.grayscale_to_rgb(
-                 tf.convert_to_tensor(x_train),
-                 name=None)
+x_train = tf.image.grayscale_to_rgb(tf.convert_to_tensor(x_train), name=None)
 
 # Create model
 model = VGG16(include_top=False, weights="imagenet", input_tensor=Input(shape=(128, 128, 3)))
