@@ -5,6 +5,7 @@ install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
+    "opencv-python",
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
