@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.models import model_from_json
 
-
+# make a directory if not exists.
 if not os.path.exists('Saved-Models'):
     os.makedirs('Saved-Models')
 
@@ -13,7 +13,11 @@ if not os.path.exists('Saved-Models'):
 def plot_acc_loss(history: tf.keras.callbacks) -> None:
     """
      Plot the results of a model using the history od it.
-    :history: numpy array
+
+     Parameters
+     ----------
+        history: numpy array
+            the callback where all the training results are saved in.
     """
     # Plot accuracy graph
     plt.plot(history.history['accuracy'], label='accuracy')
@@ -39,8 +43,12 @@ def save_model_and_weights(model: tf.keras.Sequential, test_acc: float) -> None:
     Save the model and the wights separate to a JSON file.
     this could be used later to test and use the model.
 
-    :model: the model that should be saved
-    :test_acc: float
+    Parameters
+    ----------
+        model: tf.keras.Sequential
+            the model that should be saved
+        test_acc: float
+            the results of the test dataset on the model, used to give the model unique name.
     """
     # Serialize and save model to JSON
     test_acc = int(test_acc * 10000)
@@ -59,8 +67,12 @@ def save_all_model(model: tf.keras.Sequential, test_acc: float) -> None:
     Save the whole model using .save from keras.
     this could be used to convert the model to a lit version.
 
-    :model: the model that should be saved
-    :test_acc: float
+    Parameters
+    ----------
+        model: tf.keras.Sequential
+            the model that should be saved
+        test_acc: float
+            the results of the test dataset on the model, used to give the model unique name.
     """
     test_acc = int(test_acc * 10000)
     model.save(f'saved_all_model{test_acc}')
@@ -71,7 +83,11 @@ def save_model_to_lite(test_acc: float) -> None:
     """
     Save the model into a lite version.
     that could be used in the android app.
-    :test_acc: float
+
+    Parameters
+    ----------
+        test_acc: float
+            the results of the test dataset on the model, used to give the model unique name.
     """
     test_acc = int(test_acc * 10000)
     path = f'Saved-Models//saved_model{test_acc}'
@@ -91,8 +107,13 @@ def save_model_to_lite(test_acc: float) -> None:
 def load_model_and_weights(model_path: str, weights_path: str) -> None:
     """
     Load a saved model form the directory and upload the weights to the model.
-    :model_path: string path to the saved model.
-    :weights_path: string path to the saved wights.
+
+    Parameters
+    ----------
+        model_path: str
+            string path to the saved model.
+        weights_path: str
+            string path to the saved wights.
     """
     # check if the file does exists
     if os.path.exists(model_path) and os.path.exists(weights_path):
@@ -108,14 +129,3 @@ def load_model_and_weights(model_path: str, weights_path: str) -> None:
         print('Model and weights are loaded and compiled.')
     else:
         raise OSError('File or directory does not exist!')
-
-
-def save_model_summary(model: tf.keras.Sequential, model_name: str) -> None:
-    """
-    Save the summery of a model into a txt file.
-
-    :model: the model that should be saved
-    :model_name: name of model
-    """
-    with open(f'modelsummary{model_name}.jpg', 'w') as f:
-        model.summary(print_fn=lambda x: f.write(x + '\n'))
