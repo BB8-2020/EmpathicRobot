@@ -4,6 +4,7 @@ import cv2
 import matplotlib.image as mpimg
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 
 
 def get_latest_index():
@@ -119,6 +120,8 @@ def clean_data_and_normalize(X: np.ndarray, y: np.ndarray):
             All  cleaned and normalized targets (emotions)
     """
     # Normalize image vectors
-    X = X / 255.0
+    y = pd.get_dummies(y)
+    y = tf.keras.utils.to_categorical(y, num_classes=7, dtype='float32')
+    X /= 255.0
 
     return X, y
