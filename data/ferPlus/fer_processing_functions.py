@@ -1,10 +1,37 @@
 import numpy as np
+import pandas as pd
 
-# Loads csv files and appends pixels to X and labels to y
-def preprocess_data(data, labels):
-    """Define the needed size of the image and turn the needed columns into numpy arrays."""
-    orig_class_names = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt',
-                        'unknown', 'NF']
+
+# Loads csv files and appends pixels to X and labels to y.
+def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame):
+    """
+    Define the needed size of the image and turn the needed columns into numpy arrays.
+
+    Parameters
+    ----------
+        data: pd.DataFrame
+            First dataframe containing the features (images)
+        labels: pd.DataFrame
+            Second dataframe containing the targets (emotions)
+    Return
+    ------
+        X: np.ndarray
+            All features (images)
+        y: np.ndarray
+            All targets (emotions)
+    """
+    orig_class_names = [
+        "neutral",
+        "happiness",
+        "surprise",
+        "sadness",
+        "anger",
+        "disgust",
+        "fear",
+        "contempt",
+        "unknown",
+        "NF",
+    ]
 
     n_samples = len(data)
     w = 48
@@ -13,19 +40,44 @@ def preprocess_data(data, labels):
     y = np.array(labels[orig_class_names])
     X = np.zeros((n_samples, w, h, 1))
     for i in range(n_samples):
-        X[i] = np.fromstring(data['pixels'][i], dtype=int, sep=' ').reshape((h, w, 1))
+        X[i] = np.fromstring(data["pixels"][i], dtype=int, sep=" ").reshape((h, w, 1))
 
     return X, y
 
 
-def clean_data_and_normalize(X, y):
-    """Remove the unnecessary columns and normalize all data."""
-    orig_class_names = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt',
-                        'unknown', 'NF']
-    
+def clean_data_and_normalize(X: np.ndarray, y: np.ndarray):
+    """
+    Remove the unnecessary columns and normalize all data.
+
+    Parameters
+    ----------
+        X: np.ndarray
+            All features (images)
+        y: np.ndarray
+            All targets (emotions)
+    Return
+    ------
+        X: np.ndarray
+            All  cleaned and normalized features (images)
+        y: np.ndarray
+            All  cleaned and normalized targets (emotions)
+    """
+    orig_class_names = [
+        "neutral",
+        "happiness",
+        "surprise",
+        "sadness",
+        "anger",
+        "disgust",
+        "fear",
+        "contempt",
+        "unknown",
+        "NF",
+    ]
+
     # Using mask to remove unknown or NF images
     y_mask = y.argmax(axis=-1)
-    mask = y_mask < orig_class_names.index('unknown')
+    mask = y_mask < orig_class_names.index("unknown")
     X, y = X[mask], y[mask]
 
     # Convert to probabilities between 0 and 1
