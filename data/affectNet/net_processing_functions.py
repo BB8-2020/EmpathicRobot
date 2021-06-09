@@ -121,7 +121,6 @@ def clean_data_and_normalize(X: np.ndarray, y: np.ndarray):
     """
     # Normalize image vectors
     y = pd.get_dummies(y)
-    y = tf.keras.utils.to_categorical(y, num_classes=7, dtype='float32')
     X /= 255.0
 
     return X, y

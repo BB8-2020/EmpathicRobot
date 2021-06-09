@@ -94,9 +94,6 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = 
             plt.imshow(np.squeeze(it.next()[0][0]), cmap="gray")
         else:
             plt.imshow(np.squeeze(x_train[i]), cmap="gray")
-
-        if type(y_train[i]) == str:
-            plt.xlabel(y_train[i])
     plt.show()
 
 
