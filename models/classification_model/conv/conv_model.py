@@ -17,7 +17,7 @@ def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: i
         input_shape: Tuple
             the input shape of the model
         num_classes: int
-            the number classes for the prediction
+            the number of classes for the prediction
     Return
     ------
          models_settings: list
@@ -86,12 +86,12 @@ def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: i
 
 def read_data(path: str, datagen: bool = False) -> Tuple:
     """
-    Read the data out the compress pickle file and split the data into train, test and validation set.
+    Read the data out the compressed pickle file and split the data into train, test and validation set.
 
     Parameters
     ----------
         path: str
-            the path to the compress file
+            the path to the compressed file
         datagen: bool
             check if the data argument
     Return
@@ -110,7 +110,7 @@ def read_data(path: str, datagen: bool = False) -> Tuple:
 def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, dategen: bool = False, *data) ->\
         keras.callbacks:
     """
-    Fit model using the standaart keras fit function.
+    Fit model using the standard keras fit function.
 
     Parameters
     ----------
@@ -127,7 +127,7 @@ def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, 
     Return
     ------
      history: keras.callbacks
-            where all the training results are saved in. This is used for ploty cchting the training results.
+            where all the training results are saved in. This is used for ploty catching the training results.
 
     """
 
@@ -149,7 +149,7 @@ def fit_model(model: keras.Sequential, batch_size: int = 64, epochs: int = 100, 
 
 def compile_model(model: keras.Sequential) -> None:
     """
-    Compile the model using Adam and binary crossentropy.
+    Compile the model using Adam and binary cross entropy.
 
     Parameters
     ----------
@@ -169,14 +169,16 @@ def evaluate_model(model: keras.Sequential, x_test: List[float], y_test: List[fl
     Parameters
     ----------
         model: keras.Sequential
-            the model that should be test
+            the model that should be tested
         x_test: list
             the features of the test set
         y_test: list
             the targets of the test set
         batch_size: int
             determines the batch_size that is used for test the model
-
+    Return
+    ------
+        tuple of the test acc and the train acc of the model.
     """
     test_loss, test_acc = model.evaluate(x_test, y_test, batch_size=batch_size)
     return test_loss, test_acc
