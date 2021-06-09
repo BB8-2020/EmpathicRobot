@@ -87,21 +87,21 @@ def save_model_to_lite(model: tf.keras.Sequential, test_acc: float) -> None:
     Parameters
     ----------
         model: tf.keras.Sequential
-            the model that should be saved to a lite version.
+            the model that sould be saved as a lite model.
         test_acc: float
             the results of the test dataset on the model, used to give the model unique name.
+
     """
     test_acc = int(test_acc * 10000)
 
     # check path to the Saved-Model directory
 
-    converter = tf.lite.TFLiteConverter.from_saved_model(model)
+    converter = tf.lite.TFLiteConverter.from_keras.model(model)
     tflite_model = converter.convert()
 
     # Save the model
-    with open('lite_model.tflite', 'wb') as f:
+    with open(f'lite_model{test_acc}.tflite', 'wb') as f:
         f.write(tflite_model)
-    print("Model has been saved into a lite version!")
 
 
 def load_model_and_weights(model_path: str, weights_path: str) -> None:
