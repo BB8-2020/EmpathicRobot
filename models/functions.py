@@ -71,7 +71,7 @@ def save_model_to_lite(model: tf.keras.Sequential, test_acc: float) -> None:
 
     # check path to the Saved-Model directory
 
-    converter = tf.lite.TFLiteConverter.from_keras.model(model)
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
     tflite_model = converter.convert()
 
     # Save the model
