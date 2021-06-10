@@ -3,7 +3,6 @@ import os
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras.models import model_from_json
 
 # make a directory if not exists.
 if not os.path.exists('Saved-Models'):
