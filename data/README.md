@@ -15,7 +15,7 @@ overwrite the `Fer2013` labels with these.
 
 If you have downloaded all data you can run [this](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/ferPlus/data_processing_FerPlus.ipynb)
 notebook to merge the two dataframes into one frame and analyse, process and prepare the data for our model.
-For all functions that the notebook is using you need the [ferPlus_functions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/ferPlus/fer_processing_functions.py)
+For all functions that the notebook is using you need the [ferPlus_functions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/ferPlus/ferPlus_functions.py)
 file containing `ferPlus` functions only, and the [general_definitions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/general_defenitions.py) 
 file consisting of all functions that are needed in the `FerPlus` and the `AffectNet` processing.
 
@@ -25,6 +25,6 @@ You can request access [here](http://mohammadmahoor.com/affectnet/).
 
 If you have downloaded the tar files from the source you can run [this](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/ferPlus/data_processing_FerPlus.ipynb) 
 notebook to merge the two dataframes into one frame and to analyse, process and prepare the data for our model.
-For all functions that the notebook is using you need the [affectNet_functions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/affectNet/net_processing_functions.py)
+For all functions that the notebook is using you need the [affectNet_functions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/affectNet/affectNet_functions.py)
 file consisting of all `AffectNet` functions, and the [general_definitions.py](https://github.com/BB8-2020/EmpathicRobot/blob/data/data/general_defenitions.py) 
 file consisting of all functions that are needed in the `FerPlus` and the `AffectNet` processing.
