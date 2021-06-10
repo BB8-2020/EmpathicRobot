@@ -6,6 +6,7 @@ install_requires = [
     "numpy",
     "pandas",
     "opencv-python",
+    "keras",
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
