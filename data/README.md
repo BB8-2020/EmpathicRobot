@@ -1,7 +1,8 @@
 # Data
 
 In this folder you can find all processing that has been done to our datasets. 
-Our processed sets can be found in our [Onedrive](https://hogeschoolutrecht-my.sharepoint.com/personal/maria_dukmak_student_hu_nl/_layouts/15/onedrive.aspx?originalPath=aHR0cHM6Ly9ob2dlc2Nob29sdXRyZWNodC1teS5zaGFyZXBvaW50LmNvbS86ZjovZy9wZXJzb25hbC9tYXJpYV9kdWttYWtfc3R1ZGVudF9odV9ubC9FdHBQYlBYWjdrVkh1WW1RTWlwNTJwc0JkS1kxUWNWa0d1aS1teXBMQ0xZdjh3P3J0aW1lPWdac0I1SzM5MkVn&id=%2Fpersonal%2Fmaria%5Fdukmak%5Fstudent%5Fhu%5Fnl%2FDocuments%2FBB8%2Fprocessed%5Fsets)
+Our processed sets can be found in our [Onedrive](https://hogeschoolutrecht-my.sharepoint.com/personal/maria_dukmak_student_hu_nl/_layouts/15/onedrive.aspx?originalPath=aHR0cHM6Ly9ob2dlc2Nob29sdXRyZWNodC1teS5zaGFyZXBvaW50LmNvbS86ZjovZy9wZXJzb25hbC9tYXJpYV9kdWttYWtfc3R1ZGVudF9odV9ubC9FdHBQYlBYWjdrVkh1WW1RTWlwNTJwc0JkS1kxUWNWa0d1aS1teXBMQ0xZdjh3P3J0aW1lPWdac0I1SzM5MkVn&id=%2Fpersonal%2Fmaria%5Fdukmak%5Fstudent%5Fhu%5Fnl%2FDocuments%2FBB8%2Fprocessed%5Fsets).
+For acces to this onedrive you can request access by mailing to [maria.dukmak@student.hu.nl](maria.dukmak@student.hu.nl)
 
 ## Installation
 If you want to prepare the data yourself you need to download the files from their source.
