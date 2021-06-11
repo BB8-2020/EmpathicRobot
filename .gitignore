@@ -147,7 +147,6 @@ Backup of *.doc*
 *.json
 *.pkl
 *.pickle
-*.pbz2
 
 # Keep structure
 !*.keep
