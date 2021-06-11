@@ -1,3 +1,4 @@
+"""Tests for model_functions.py."""
 import pytest
 
 from tensorflow.keras import Sequential
@@ -7,37 +8,42 @@ from models.classification_model.model_functions import fit_model
 from models.classification_model.model_functions import compile_model
 from models.classification_model.model_functions import evaluate_model
 
-def test_read_data():
+# every function needs this so we run it ones and use the output in the tests
+model = build_models()
+data = read_data("tests/dataclassificationmodel/ferPlus_processed.pbz2", False)
+seq_model = Sequential(model[0]['layers'], name=model[0]['name'])
+compile_model(seq_model)
+fitted_model = fit_model(seq_model, 64, 1, False, data[0], data[1], data[2], data[3], data[4])
+
+def test_read_data_processed():
     """Testing the function by checking if the output is the correct size and type."""
-    output = read_data("tests/dataclassificationmodel/ferPlus_processed", False)
-    assert len(output) == 6 and type(output) is tuple
+    global data
+    assert len(data) == 6 and type(data) is tuple
+
+
+def test_read_data_augmented():
+    """Testing the function by checking if the output is the correct size and type."""
+    data = read_data("tests/dataclassificationmodel/ferPlus_augment.pbz2")
+    assert len(data) == 6 and type(data) is tuple
+
 
 def test_fit_model():
     """"Testing the function by checking if the loss isn't 0."""
-    model = build_models()
-    data = read_data("tests/dataclassificationmodel/ferPlus_processed", False)
-    seq_model = Sequential(model[0]['layers'], name=model[0]['name'])
-    compile_model(seq_model)
-    output = fit_model(seq_model, 64, 1, False, data[0], data[1], data[2], data[3], data[4])
-    assert output.history['loss'] != 0
+    global fitted_model
+    assert fitted_model.history['loss'] != 0
+
 
 def test_compile_model():
     """Testing the compile_model function by checking if the fit_model function can be run without errors."""
-    model = build_models()
-    data = read_data("tests/dataclassificationmodel/ferPlus_processed", False)
-    seq_model = Sequential(model[0]['layers'], name=model[0]['name'])
-    compile_model(seq_model)
+    global seq_model, data
     try:
         fit_model(seq_model, 64, 1, False, data[0], data[1], data[2], data[3], data[4])
     except RuntimeError:
-        pytest.fail("Unexpected RuntimeError. Model needs to be compiled before fitting.")
+        pytest.fail("Unexpected RuntimeError: Model needs to be compiled before fitting.")
+
 
 def test_evaluate_model():
     """Testing the evaluate_model function by checking the length of the output."""
-    model = build_models()
-    data = read_data("tests/dataclassificationmodel/ferPlus_processed", False)
-    seq_model = Sequential(model[0]['layers'], name=model[0]['name'])
-    compile_model(seq_model)
-    fit_model(seq_model, 64, 1, False, data[0], data[1], data[2], data[3], data[4])
+    global seq_model, data
     output = evaluate_model(seq_model, data[4], data[5], 64)
     assert len(output) == 2
