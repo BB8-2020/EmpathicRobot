@@ -16,9 +16,8 @@ def test_get_latest_index():
     Assert
     ------
         We check if the returned index is an integer.
-
     """
-    os.chdir(os.getcwd() + '/../test_data_lead')
+    os.chdir(os.getcwd() + '/tests/dataprocessing')
     output = get_latest_index()
     expected = int
     assert type(output) == expected
@@ -35,15 +34,15 @@ def test_convert_to_dataframe():
     emotions = {0: 'Neutral', 1: 'Happiness', 2: 'Sadness', 3: 'Surprise', 4: 'Fear', 5: 'Disgust', 6: 'Anger',
                 7: 'Contempt', 8: 'None', 9: 'Uncertain', 10: 'No-Face'}
 
-    cap = 2
+    cap = 1
     path = 'train_set'
-    latest_img = 5
+    latest_img = 2
 
     df = pd.DataFrame(columns=['formatted_pixels', 'target'])
 
     convert_to_dataframe(latest_img, df, emotions, path, cap)
 
-    assert len(df['target']) == 3
+    assert len(df['target']) == 2
 
 
 def test_preprocess_data():
@@ -54,7 +53,7 @@ def test_preprocess_data():
     ------
         Check if the outcoming size of images equals the wanted shape.
     """
-    data = bz2.BZ2File('../EmpathicRobot/data/datasets/affectNet_val_comp', 'rb')
+    data = bz2.BZ2File('affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
     X, y = preprocess_data(df)
@@ -75,6 +74,6 @@ def test_clean_data_and_normalize():
     y = np.array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
     X, y = clean_data_and_normalize(X, y)
-    os.chdir(os.getcwd() + '/../EmpathicRobot')
+    os.chdir(os.getcwd() + '/../../')
 
     assert (int(X[0]), y.shape) == (1, (10, 10))
