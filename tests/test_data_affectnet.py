@@ -75,5 +75,6 @@ def test_clean_data_and_normalize():
     y = np.array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
     X, y = clean_data_and_normalize(X, y)
+    os.chdir(os.getcwd() + '/../EmpathicRobot')
 
     assert (int(X[0]), y.shape) == (1, (10, 10))
