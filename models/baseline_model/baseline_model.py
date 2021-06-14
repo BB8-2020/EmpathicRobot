@@ -31,7 +31,7 @@ def read_data(path: str) -> dict:
         frame = json.loads(data.read())
         return frame
     except OSError:
-        print(f"File in this {path} does not exist")
+        raise Exception(f"File in this {path} does not exist")
 
 
 def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
