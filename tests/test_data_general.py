@@ -69,6 +69,7 @@ def test_show_images():
     expected = (10.0, 7.0)
     assert (figsize[0], figsize[1]) == expected
 
+
 def test_comp_pickle_save():
     """
     Test the save to a compressed pickle file.
