@@ -1,6 +1,5 @@
 """Tests for the data processing functions of the FerPlus dataset."""
 import random
-import pytest
 import numpy as np
 import pandas as pd
 

@@ -1,5 +1,4 @@
 """Tests for the data processing functions of the AffectNet dataset."""
-import pytest
 import bz2
 import numpy as np
 import pandas as pd

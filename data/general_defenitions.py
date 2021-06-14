@@ -84,7 +84,7 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = 
     """
     if datagen is not None:
         it = datagen.flow(x_train, y_train, batch_size=1)
-    plt.figure(figsize=(10, 7))
+    fig = plt.figure(figsize=(10, 7))
     for i in range(25):
         plt.subplot(5, 5, i + 1)
         plt.xticks([])
@@ -94,7 +94,9 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = 
             plt.imshow(np.squeeze(it.next()[0][0]), cmap="gray")
         else:
             plt.imshow(np.squeeze(x_train[i]), cmap="gray")
+
     plt.show()
+    return fig.get_size_inches()
 
 
 def comp_pickle_save(data: list, filename: str):
