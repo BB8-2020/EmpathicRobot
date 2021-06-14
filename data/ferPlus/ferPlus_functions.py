@@ -38,6 +38,8 @@ def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarra
     w = 48
     h = 48
     y = np.array(labels[orig_class_names])
+    print(y)
+    print(labels)
     X = np.zeros((n_samples, w, h, 1))
     for i in range(n_samples):
         X[i] = np.fromstring(data["pixels"][i], dtype=int, sep=" ").reshape((h, w, 1))

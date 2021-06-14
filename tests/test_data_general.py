@@ -13,7 +13,7 @@ from data.general_defenitions import split_data, data_augmentation, show_images,
 data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
 labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
 
-X, y = fer.preprocess_data(data, labels.set_index("Usage"))
+X, y = fer.preprocess_data(data, labels)
 X, y = fer.clean_data_and_normalize(X, y)
 
 
