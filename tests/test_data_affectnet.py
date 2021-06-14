@@ -1,10 +1,13 @@
 """Tests for the data processing functions of the AffectNet dataset."""
 import pytest
-import random
+import bz2
 import numpy as np
 import pandas as pd
+import _pickle as cPickle
+import os
 
-from data.affectNet.affectNet_functions import preprocess_data, clean_data_and_normalize, get_latest_index, convert_to_dataframe
+from data.affectNet.affectNet_functions import preprocess_data, clean_data_and_normalize, get_latest_index, \
+    convert_to_dataframe
 
 
 def test_get_latest_index():
@@ -16,7 +19,8 @@ def test_get_latest_index():
         We check if the returned index is an integer.
 
     """
-    output = get_latest_index
+    os.chdir(os.getcwd() + '/../test_data_lead')
+    output = get_latest_index()
     expected = int
     assert type(output) == expected
 
@@ -33,14 +37,14 @@ def test_convert_to_dataframe():
                 7: 'Contempt', 8: 'None', 9: 'Uncertain', 10: 'No-Face'}
 
     cap = 2
-    path = '../../test_data_lead/train_set'
+    path = 'train_set'
     latest_img = 5
 
-    df = pd.DataFrame(columns=['pixels', 'emotion'])
+    df = pd.DataFrame(columns=['formatted_pixels', 'target'])
 
     convert_to_dataframe(latest_img, df, emotions, path, cap)
 
-    assert len(df['target']) == 2
+    assert len(df['target']) == 3
 
 
 def test_preprocess_data():
@@ -51,19 +55,14 @@ def test_preprocess_data():
     ------
         Check if the outcoming size of images equals the wanted shape.
     """
-    pixelstring = [random.randrange(0, 248) for i in range(6912)]
-    emotion = 'happiness'
+    data = bz2.BZ2File('../EmpathicRobot/data/datasets/affectNet_val_comp', 'rb')
+    df = cPickle.load(data)
 
-    data = {'pixels': [pixelstring],
-            'emotion': [emotion]
-            }
-
-    df = pd.DataFrame(data, columns=['pixels', 'emotion'])
-
-    preprocess_data(df)
-    size = np.array(df['pixels'][0]).shape
+    X, y = preprocess_data(df)
+    size = np.array(X[0]).shape
     expected_size = (48, 48, 3)
     assert size == expected_size
+
 
 def test_clean_data_and_normalize():
     """
@@ -71,11 +70,11 @@ def test_clean_data_and_normalize():
 
     Assert
     ------
-        Check if the target values are normalized and dummied.
+        Check if the target values are normalized and dummied to the right shapes.
     """
-    X = np.array([255, 255, 255, 255, 255, 255, 255])
-    y = np.array([0, 1, 2, 3, 4, 5, 6])
+    X = np.array([255.0, 255.0, 255.0, 255.0, 255.0, 255.0, 255.0])
+    y = np.array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
     X, y = clean_data_and_normalize(X, y)
 
-    assert (int(X[0]), y[0].shape) == (1, (7, 7))
+    assert (int(X[0]), y.shape) == (1, (10, 10))

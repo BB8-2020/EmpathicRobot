@@ -30,9 +30,10 @@ def test_preprocess_data():
             "contempt": [0],
             "unknown": [0],
             "NF": [0],
-             }
+            }
 
-    df = pd.DataFrame(data, columns=['pixels', 'happiness', "neutral", 'surprise', "sadness", "anger", "disgust", "fear", "contempt", "unknown", "NF",])
+    df = pd.DataFrame(data, columns=['pixels', 'happiness', "neutral", 'surprise', "sadness", "anger",
+                                     "disgust", "fear", "contempt", "unknown", "NF"])
 
     X, y = preprocess_data(df, df)
     size = X[0].shape

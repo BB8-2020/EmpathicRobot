@@ -4,7 +4,6 @@ import cv2
 import matplotlib.image as mpimg
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 
 
 def get_latest_index():
@@ -27,7 +26,7 @@ def get_latest_index():
     return latest_img
 
 
-def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: list, path: str):
+def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path: str, cap: int = 28000):
     """
     Loop through all images, except for datasets larger than the wanted size.
     Load these images with labels into a pandas dataframe.
@@ -42,6 +41,8 @@ def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: list, path
             All emotions that can occur in the dataframe
         path: str
             Path where images and emotions are settled
+        cap: int = 28000
+            max size of a dataframe we create
     Return
     ------
         X: np.ndarray
@@ -52,8 +53,8 @@ def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: list, path
     frame_index = 0
 
     # Because of the heavy weight of this dataset we decided to max it at 28 images.
-    if latest_img > 28000:
-        latest_img = 28000
+    if latest_img > cap:
+        latest_img = cap
 
     for i in range(latest_img + 1):
         try:
