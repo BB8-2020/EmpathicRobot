@@ -1,6 +1,6 @@
+"""General definitions that are used for cleaning, preparing and processing the FerPlus and AffectNet dataset."""
 import bz2
 from math import ceil
-
 import _pickle as cPickle
 import matplotlib.pyplot as plt
 import numpy as np

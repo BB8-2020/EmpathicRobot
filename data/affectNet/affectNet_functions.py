@@ -1,5 +1,5 @@
+"""Functions for converting, cleaning, preparing and processing the AffectNet dataset."""
 import os
-
 import cv2
 import matplotlib.image as mpimg
 import numpy as np

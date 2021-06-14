@@ -1,8 +1,8 @@
+"""Functions for processing, cleaning and normalizing the FerPlus dataset."""
 import numpy as np
 import pandas as pd
 
 
-# Loads csv files and appends pixels to X and labels to y.
 def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame):
     """
     Define the needed size of the image and turn the needed columns into numpy arrays.
