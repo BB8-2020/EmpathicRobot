@@ -10,8 +10,8 @@ from data.ferPlus import ferPlus_functions as fer
 from data.affectNet import affectNet_functions as affect
 from data.general_defenitions import split_data, data_augmentation, show_images, comp_pickle_save
 
-data = pd.read_csv('data/datasets/fer2013.csv')
-labels = pd.read_csv('data/datasets/fer2013new.csv')
+data = pd.read_csv('tests/data_processing/fer2013_sample.csv')
+labels = pd.read_csv('tests/data_processing/fer2013new_sample.csv')
 
 X, y = fer.preprocess_data(data, labels)
 X, y = fer.clean_data_and_normalize(X, y)
@@ -44,7 +44,7 @@ def test_data_augmentation():
     ------
         Check if a correct Datagen is created.
     """
-    data = bz2.BZ2File('data/datasets/affectNet_val_comp', 'rb')
+    data = bz2.BZ2File('tests/data_processing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
     X, y = affect.preprocess_data(df)
