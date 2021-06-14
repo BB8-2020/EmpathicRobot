@@ -144,7 +144,6 @@ Backup of *.doc*
 *.zip
 *.rar
 *.csv
-*.json
 *.pkl
 *.pickle
 
