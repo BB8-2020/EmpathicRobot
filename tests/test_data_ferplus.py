@@ -1,5 +1,4 @@
 """Tests for the data processing functions of the FerPlus dataset."""
-import random
 import numpy as np
 import pandas as pd
 
@@ -14,27 +13,11 @@ def test_preprocess_data():
     ------
         Check if the outcoming size of images equals the wanted shape.
     """
-    pixelstring = ''
-    for i in range(2304):
-        x = random.randrange(0, 248)
-        pixelstring += f'{x} '
+    data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
+    labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
 
-    data = {'pixels': [pixelstring],
-            "happiness": [0],
-            "surprise": [0],
-            "sadness": [0],
-            "anger": [6],
-            "disgust": [1],
-            "fear": [3],
-            "contempt": [0],
-            "unknown": [0],
-            "NF": [0],
-            }
+    X, y = preprocess_data(data, labels)
 
-    df = pd.DataFrame(data, columns=['pixels', 'happiness', "neutral", 'surprise', "sadness", "anger",
-                                     "disgust", "fear", "contempt", "unknown", "NF"])
-
-    X, y = preprocess_data(df, df)
     size = X[0].shape
     expected_size = (48, 48, 1)
     assert size == expected_size
