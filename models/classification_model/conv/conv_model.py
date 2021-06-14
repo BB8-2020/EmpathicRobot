@@ -77,4 +77,3 @@ def build_models(input_shape: Tuple[int, int, int] = (48, 48, 1), num_classes: i
         ]
     }]
     return models_settings
-

@@ -1,8 +1,15 @@
+"""Testing the general models functions."""
 import pytest
-from models.functions import *
+from matplotlib import pyplot as plt
+
+from models.functions import plot_acc_loss, save_all_model, save_model_to_lite
 
 
-def test_load_model_and_weights():
+def test_plot_acc_loss():
+    # plt.close()
+    # plot_acc_loss()
+    # assert plt.gcf().number == 1
+
     pass
 
 
@@ -11,16 +18,4 @@ def test_save_model_to_lite():
 
 
 def test_save_all_model():
-    pass
-
-
-def test_save_model_and_weights():
-    pass
-
-
-def test_plot_acc_loss():
-    # plt.close()
-    # plot_acc_loss()
-    # assert plt.gcf().number == 1
-    #
     pass
