@@ -7,7 +7,7 @@ install_requires = [
     "pandas",
     "opencv-python",
     "keras",
-    "matplotlib.pyplot"
+    "matplotlib"
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
