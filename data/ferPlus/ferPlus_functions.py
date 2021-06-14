@@ -1,9 +1,10 @@
 """Functions for processing, cleaning and normalizing the FerPlus dataset."""
 import numpy as np
 import pandas as pd
+from typing import Tuple
 
 
-def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame):
+def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
     """
     Define the needed size of the image and turn the needed columns into numpy arrays.
 
@@ -36,12 +37,10 @@ def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame):
     n_samples = len(data)
     w = 48
     h = 48
-
     y = np.array(labels[orig_class_names])
     X = np.zeros((n_samples, w, h, 1))
     for i in range(n_samples):
         X[i] = np.fromstring(data["pixels"][i], dtype=int, sep=" ").reshape((h, w, 1))
-
     return X, y
 
 
