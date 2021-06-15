@@ -10,6 +10,12 @@ from data.ferPlus import ferPlus_functions as fer
 from data.affectNet import affectNet_functions as affect
 from data.general_defenitions import split_data, data_augmentation, show_images, comp_pickle_save
 
+data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
+labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
+
+X, y = fer.preprocess_data(data, labels)
+X, y = fer.clean_data_and_normalize(X, y)
+
 
 def test_split_data():
     """
@@ -19,12 +25,6 @@ def test_split_data():
     ------
         If all variables have the length they are supposed to get.
     """
-    data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
-    labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
-
-    X, y = fer.preprocess_data(data, labels)
-    X, y = fer.clean_data_and_normalize(X, y)
-
     tot_len = len(X)
     x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
 
@@ -63,12 +63,6 @@ def test_show_images():
     ------
         Check if the correct figsizes are plotted in the function.
     """
-    data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
-    labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
-
-    X, y = fer.preprocess_data(data, labels)
-    X, y = fer.clean_data_and_normalize(X, y)
-
     x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
     figsize = show_images(x_train, y_train, None, 5)
 
