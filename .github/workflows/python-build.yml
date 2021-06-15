@@ -14,7 +14,7 @@ jobs:
         python-version: 3.8
     - name: Fetch LFS files
       run : |
-        apt-get install git-lfs
+        sudo apt-get install git-lfs -y
         git lfs install
         git lfs fetch --all
         git lfs pull
