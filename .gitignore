@@ -143,7 +143,6 @@ Backup of *.doc*
 # Large files
 *.zip
 *.rar
-*.csv
 *.pkl
 *.pickle
 
