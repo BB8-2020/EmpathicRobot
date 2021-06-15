@@ -64,7 +64,7 @@ def test_show_images():
         Check if the correct figsizes are plotted in the function.
     """
     x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
-    figsize = show_images(x_train, y_train)
+    figsize = show_images(x_train, y_train, None, 5)
 
     expected = (10.0, 7.0)
     assert (figsize[0], figsize[1]) == expected

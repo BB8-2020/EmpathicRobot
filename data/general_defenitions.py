@@ -69,7 +69,7 @@ def data_augmentation(x_train: np.ndarray):
     return datagen
 
 
-def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = None):
+def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = None, amount: int = 25):
     """
     Show images with a check for augmented images and check if the emotion is defined to show.
 
@@ -82,10 +82,10 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = 
         datagen: np.ndarray = None
             The augmented images, can be None
     """
-    if datagen is not None:
+    if datagen:
         it = datagen.flow(x_train, y_train, batch_size=1)
     fig = plt.figure(figsize=(10, 7))
-    for i in range(25):
+    for i in range(amount):
         plt.subplot(5, 5, i + 1)
         plt.xticks([])
         plt.yticks([])
