@@ -8,6 +8,7 @@ from models.baseline_model.baseline_model import train_model
 from models.baseline_model.baseline_model import compile_model
 from models.baseline_model.baseline_model import evaluate_model
 
+
 @pytest.fixture
 def run_read_data_train():
     """Reads the given datafile."""
@@ -45,6 +46,7 @@ def test_raises_OSError_read_data():
         read_data("tests/databaselinemodel")
 
 
+@pytest.mark.long
 def test_create_datasets(run_create_datasets):
     """Testing create_datasets() by checking if the reshape and categorization was successful."""
     x_feature, y_target = run_create_datasets
@@ -61,12 +63,14 @@ def test_create_model():
     assert len(model.layers) == 7
 
 
+@pytest.mark.long
 def test_train_model(run_train_model):
     """Testing if the model got trained by checking if the loss isn't 0."""
     _, history = run_train_model
     assert history.history['loss'] != 0
 
 
+@pytest.mark.long
 def test_compile_model(run_train_model):
     """
         Testing if compile_model() compiles the model.
@@ -78,6 +82,7 @@ def test_compile_model(run_train_model):
         pytest.fail("Unexpected RuntimeError: Model needs to be compiled before training.")
 
 
+@pytest.mark.long
 def test_evaluate_model(run_train_model):
     """Testing the evaluate_model function by checking the output length and type."""
     test_data = read_data("tests/databaselinemodel/test_happy_frame.json")

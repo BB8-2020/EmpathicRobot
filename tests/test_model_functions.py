@@ -7,7 +7,7 @@ import pytest
 from tensorflow.keras import Sequential
 from models.classification_model.conv.conv_model import build_models
 from models.classification_model.model_functions import read_data
-# from models.classification_model.model_functions import fit_model
+from models.classification_model.model_functions import fit_model
 from models.classification_model.model_functions import compile_model
 from models.classification_model.model_functions import evaluate_model
 
@@ -26,13 +26,14 @@ def sequential_model():
     seq_model = Sequential(model[0]['layers'], name=model[0]['name'])
     return seq_model
 
-# @pytest.fixture
-# def fitted_model(model_data, sequential_model):
-#    """Fits the model to test the fit function."""
-#     x_train, y_train, x_val, y_val, x_test, _ = model_data
-#     compile_model(sequential_model)
-#     fitted_model = fit_model(sequential_model, 64, 1, False, x_train, y_train, x_val, y_val, x_test)
-#     return fitted_model
+
+@pytest.fixture
+def fitted_model(model_data, sequential_model):
+    """Fits the model to test the fit function."""
+    x_train, y_train, x_val, y_val, x_test, _ = model_data
+    compile_model(sequential_model)
+    fitted_model = fit_model(sequential_model, 64, 1, False, x_train, y_train, x_val, y_val, x_test)
+    return fitted_model
 
 
 def test_read_data_processed(model_data):
@@ -46,18 +47,20 @@ def test_read_data_augmented():
     assert len(data) == 7 and type(data) is tuple
 
 
-# def test_fit_model(fitted_model):
-#     """"Testing the function by checking if the loss isn't 0."""
-#     assert fitted_model.history['loss'] != 0
+@pytest.mark.long
+def test_fit_model(fitted_model):
+    """"Testing the function by checking if the loss isn't 0."""
+    assert fitted_model.history['loss'] != 0
 
 
-# def test_compile_model(sequential_model, model_data, fitted_model):
-#     """Testing the compile_model function by checking if the fit_model function can be run without errors."""
-#     x_train, y_train, x_val, y_val, x_test, _ = model_data
-#     try:
-#         fitted_model
-#     except RuntimeError:
-#         pytest.fail("Unexpected RuntimeError: Model needs to be compiled before fitting.")
+@pytest.mark.long
+def test_compile_model(sequential_model, model_data, fitted_model):
+    """Testing the compile_model function by checking if the fit_model function can be run without errors."""
+    x_train, y_train, x_val, y_val, x_test, _ = model_data
+    try:
+        fitted_model
+    except RuntimeError:
+        pytest.fail("Unexpected RuntimeError: Model needs to be compiled before fitting.")
 
 
 def test_evaluate_model(sequential_model, model_data):
