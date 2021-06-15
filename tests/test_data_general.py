@@ -31,7 +31,7 @@ def test_split_data():
 
 
 def test_data_augmentation():
-    """Test the split data function if data is devided in correct pieces.    """
+    """Test the split data function if data is devided in correct pieces."""
     data = bz2.BZ2File('tests/dataprocessing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
