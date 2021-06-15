@@ -40,12 +40,13 @@ def test_read_data(run_read_data_train):
     assert "pixels" in data.keys() and "happy" in data.keys() and "formatted_pixels" in data.keys()
 
 
-def test_raises_OSError_read_data():
+def test_raises_oserror_read_data():
     """Testing the raise Exception in the read_data function by giving a wrong path."""
     with pytest.raises(Exception, match=r"File in this .* does not exist"):
         read_data("tests/databaselinemodel")
 
 
+# All tests marked with long take to long to run. If you want to run these tests use . pytest -vs
 @pytest.mark.long
 def test_create_datasets(run_create_datasets):
     """Testing create_datasets() by checking if the reshape and categorization was successful."""
@@ -74,7 +75,7 @@ def test_train_model(run_train_model):
 def test_compile_model(run_train_model):
     """
         Testing if compile_model() compiles the model.
-        This is done by calling the train_model function and see if the funcion can run without errors.
+        This is done by calling the train_model function and see if the function can run without errors.
     """
     try:
         run_train_model
