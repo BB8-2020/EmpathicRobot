@@ -1,10 +1,11 @@
 """Functions for converting, cleaning, preparing and processing the AffectNet dataset."""
 import os
+from typing import Tuple
+
 import cv2
 import matplotlib.image as mpimg
 import numpy as np
 import pandas as pd
-from typing import Tuple
 
 
 def get_latest_index() -> int:
@@ -16,13 +17,14 @@ def get_latest_index() -> int:
         latest_img: int
             Index of last image in folder
     """
-    latest_img = 0
-    arr = os.listdir("train_set/images")
-
-    for i in arr:
-        index = i.split(".")[0]
-        if int(index) > latest_img:
-            latest_img = int(index)
+    latest_img = int(os.listdir("train_set/images")[-1].split(".")[0])
+    # print(array[-1].split("."))
+    #
+    # for i in array:
+    #     index = i.split(".")[0]
+    #     if int(index) > latest_img:
+    #         latest_img = int(index)
+    # print(latest_img)
 
     return latest_img
 
@@ -44,16 +46,10 @@ def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path
             Path where images and emotions are settled
         cap: int = 28000
             max size of a dataframe we create
-    Return
-    ------
-        X: np.ndarray
-            All  cleaned and normalized features (images)
-        y: np.ndarray
-            All  cleaned and normalized targets (emotions)
     """
     frame_index = 0
 
-    # Because of the heavy weight of this dataset we decided to max it at 28 images.
+    # Because of the heavy weight of this dataset we decided to max it at 28k images.
     if latest_img > cap:
         latest_img = cap
 

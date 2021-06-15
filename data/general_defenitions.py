@@ -1,12 +1,13 @@
 """General definitions that are used for cleaning, preparing and processing the FerPlus and AffectNet dataset."""
+import _pickle as cPickle
 import bz2
 from math import ceil
-import _pickle as cPickle
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from typing import Tuple
 
 
 def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
@@ -84,18 +85,13 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: ImageDataGene
         datagen: np.ndarray = None
             The augmented images, can be None
     """
-    if datagen:
-        it = datagen.flow(x_train, y_train, batch_size=1)
+    it = datagen.flow(x_train, y_train, batch_size=1) if datagen else None
+
     fig = plt.figure(figsize=(10, 7))
     for i in range(amount):
         plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        if datagen is not None:
-            plt.imshow(np.squeeze(it.next()[0][0]), cmap="gray")
-        else:
-            plt.imshow(np.squeeze(x_train[i]), cmap="gray")
+        plt.imshow(np.squeeze(it.next()[0][0]), cmap="gray") if datagen else plt.imshow(np.squeeze(x_train[i]),
+                                                                                        cmap="gray")
 
     plt.show()
     return fig.get_size_inches()
@@ -109,9 +105,9 @@ def comp_pickle_save(data: list, filename: str) -> None:
     Parameters
     ----------
         data: list
-            All data wanted to be saved in the pkl file
+            All data wanted to be saved in a compressed pickle file
         filename: str
-            Wanted filename for pkl file
+            Wanted filename for the file
     """
     with bz2.BZ2File(filename, "w") as f:
         cPickle.dump(data, f)

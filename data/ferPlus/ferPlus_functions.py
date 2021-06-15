@@ -1,7 +1,8 @@
 """Functions for processing, cleaning and normalizing the FerPlus dataset."""
+from typing import Tuple
+
 import numpy as np
 import pandas as pd
-from typing import Tuple
 
 
 def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:

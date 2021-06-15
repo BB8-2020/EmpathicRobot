@@ -6,13 +6,7 @@ from data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_norma
 
 
 def test_preprocess_data():
-    """
-    Test the preprocess functions by checking if the images and emotions are the right shape.
-
-    Assert
-    ------
-        Check if the outcoming size of images equals the wanted shape.
-    """
+    """Test the preprocess functions by checking if the images and emotions are the right shape."""
     data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
     labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
 
@@ -24,13 +18,7 @@ def test_preprocess_data():
 
 
 def test_clean_data_and_normalize():
-    """
-    Test the clean and normalize function
-
-    Assert
-    ------
-        Check if the target values are normalized and dummied to the right shapes.
-    """
+    """Test the clean and normalize function."""
     X = np.array([255.0, 255.0, 255.0, 255.0, 255.0, 255.0, 255.0])
     y = np.array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
