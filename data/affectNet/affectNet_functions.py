@@ -8,36 +8,13 @@ import numpy as np
 import pandas as pd
 
 
-def get_latest_index() -> int:
-    """
-    Get index of the last image in folder.
-
-    Return
-    ------
-        latest_img: int
-            Index of last image in folder
-    """
-    latest_img = int(os.listdir("train_set/images")[-1].split(".")[0])
-    # print(array[-1].split("."))
-    #
-    # for i in array:
-    #     index = i.split(".")[0]
-    #     if int(index) > latest_img:
-    #         latest_img = int(index)
-    # print(latest_img)
-
-    return latest_img
-
-
-def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path: str, cap: int = 28000) -> None:
+def convert_to_dataframe(df: pd.DataFrame, emotions: dict, path: str, cap: int = 28000) -> None:
     """
     Loop through all images, except for datasets larger than the wanted size.
     Load these images with labels into a pandas dataframe.
 
     Parameters
     ----------
-        latest_img: int
-            Index of last image in folder
         df: pd.DataFrame
             Dataframe that needs to be filled with features and targets
         emotions: list
@@ -47,6 +24,9 @@ def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path
         cap: int = 28000
             max size of a dataframe we create
     """
+    # Get the name of last image in folder
+    latest_img = int(os.listdir(path + "/images")[-1].split(".")[0])
+
     frame_index = 0
 
     # Because of the heavy weight of this dataset we decided to max it at 28k images.
