@@ -143,11 +143,8 @@ Backup of *.doc*
 # Large files
 *.zip
 *.rar
-*.csv
-*.json
 *.pkl
 *.pickle
-*.pbz2
 
 # Keep structure
 !*.keep
