@@ -6,9 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from typing import Tuple
 
 
-def split_data(X: np.ndarray, y: np.ndarray):
+def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
+                                                      np.ndarray, np.ndarray, np.ndarray]:
     """
     Split the incoming data into train, test and validation sets.
 
@@ -45,7 +47,7 @@ def split_data(X: np.ndarray, y: np.ndarray):
     return x_train, y_train, x_val, y_val, x_test, y_test
 
 
-def data_augmentation(x_train: np.ndarray):
+def data_augmentation(x_train: np.ndarray) -> ImageDataGenerator:
     """
     Augment the images by rotating, flipping and shifting.
 
@@ -69,7 +71,7 @@ def data_augmentation(x_train: np.ndarray):
     return datagen
 
 
-def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = None, amount: int = 25):
+def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: ImageDataGenerator = None, amount: int = 25) -> list:
     """
     Show images with a check for augmented images and check if the emotion is defined to show.
 
@@ -99,7 +101,7 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: np.ndarray = 
     return fig.get_size_inches()
 
 
-def comp_pickle_save(data: list, filename: str):
+def comp_pickle_save(data: list, filename: str) -> None:
     """
     Dump the incoming data in a compressed pickle file,
     this is one of the lightest ways to save data with and keep easy access.

@@ -4,9 +4,10 @@ import cv2
 import matplotlib.image as mpimg
 import numpy as np
 import pandas as pd
+from typing import Tuple
 
 
-def get_latest_index():
+def get_latest_index() -> int:
     """
     Get index of the last image in folder.
 
@@ -26,7 +27,7 @@ def get_latest_index():
     return latest_img
 
 
-def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path: str, cap: int = 28000):
+def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path: str, cap: int = 28000) -> None:
     """
     Loop through all images, except for datasets larger than the wanted size.
     Load these images with labels into a pandas dataframe.
@@ -71,7 +72,7 @@ def convert_to_dataframe(latest_img: int, df: pd.DataFrame, emotions: dict, path
             print(f"Image with index {i} was not found.")
 
 
-def preprocess_data(data: pd.DataFrame):
+def preprocess_data(data: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
     """
     Resize the images based on what size de model is trained on. Turn the needed columns into numpy arrays.
 
@@ -103,7 +104,7 @@ def preprocess_data(data: pd.DataFrame):
     return X, y
 
 
-def clean_data_and_normalize(X: np.ndarray, y: np.ndarray):
+def clean_data_and_normalize(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, pd.DataFrame]:
     """
     Normalize the data.
 
