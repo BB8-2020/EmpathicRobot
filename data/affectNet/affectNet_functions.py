@@ -25,7 +25,7 @@ def convert_to_dataframe(df: pd.DataFrame, emotions: dict, path: str, cap: int =
             max size of a dataframe we create
     """
     # Get the name of last image in folder
-    latest_img = int(os.listdir(path + "/images")[-1].split(".")[0])
+    latest_img = int(os.listdir(f"{path}/images")[-1].split(".")[0])
 
     frame_index = 0
 
@@ -35,8 +35,8 @@ def convert_to_dataframe(df: pd.DataFrame, emotions: dict, path: str, cap: int =
 
     for i in range(latest_img + 1):
         try:
-            emotion = np.load(path + "/annotations/" + str(i) + "_exp.npy")
-            img = mpimg.imread(path + "/images/" + str(i) + ".jpg")
+            emotion = np.load(f"{path}/annotations/{i}_exp.npy")
+            img = mpimg.imread(f"{path}/images/{i}.jpg")
 
             df.at[frame_index, "formatted_pixels"] = img
             df.at[frame_index, "target"] = emotions[int(emotion)]
