@@ -29,4 +29,4 @@ jobs:
         flake8 . --config="./setup.cfg"
     - name: Test with pytest
       run: |
-        pytest . -vs
+        pytest . -v -m "not long"
