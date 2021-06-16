@@ -49,7 +49,7 @@ def test_read_data_augmented():
 
 @pytest.mark.long
 def test_fit_model(fitted_model):
-    """"Testing the function by checking if the loss isn't 0."""
+    """Testing the function by checking if the loss isn't 0."""
     assert fitted_model.history['loss'] is not None
 
 

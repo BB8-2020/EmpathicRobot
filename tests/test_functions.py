@@ -9,7 +9,7 @@ from models.classification_model.model_functions import read_data, evaluate_mode
 
 @pytest.fixture
 def prep_for_save():
-    """Preparation for the save functions because both need this to be ran."""
+    """Prepare for the save functions because both need this to be ran."""
     x_train, y_train, x_val, y_val, x_test, y_test = read_data('tests/dataclassificationmodel/ferPlus_processed.pbz2')
     model = load_model("tests/datamodels/model")
     _, test_accuracy = evaluate_model(model, x_test, y_test, 64)

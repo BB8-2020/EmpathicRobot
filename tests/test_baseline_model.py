@@ -11,14 +11,14 @@ from models.baseline_model.baseline_model import evaluate_model
 
 @pytest.fixture
 def run_read_data_train():
-    """Reads the given datafile."""
+    """Read the given datafile."""
     data = read_data("tests/databaselinemodel/train_happy_frame.json")
     return data
 
 
 @pytest.fixture
 def run_create_datasets(run_read_data_train):
-    """Reads data and creates the datasets with that data."""
+    """Read data and creates the datasets with that data."""
     frame = run_read_data_train
     x_feature, y_target = create_datasets(frame, 'formatted_pixels', 'happy')
     return x_feature, y_target
@@ -26,7 +26,7 @@ def run_create_datasets(run_read_data_train):
 
 @pytest.fixture
 def run_train_model(run_read_data_train):
-    """Reads data, creates a model, compiles that model and trains that model."""
+    """Read data, creates a model, compiles that model and trains that model."""
     data = run_read_data_train
     model = create_model()
     compile_model(model)
