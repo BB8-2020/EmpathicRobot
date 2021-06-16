@@ -32,19 +32,17 @@ When you made a change that complies with the rules, you can start a **Pull requ
 
 The `main` branch is already secured as we told before. The only way that you can get to this branch is by opening a **Pull request**. Every pull request must include this:
 
-* Working code 
-* Numpy style docstrings 
-* Pytest 
-* Up to date requirements.txt
+> * Working code 
+> * Numpy style docstrings 
+> * Pytest 
+> * Up to date requirements.txt
 
 #### Developing branches
 
 You can use/open a `developing` branch so you allowed to push directaly code into it. However pleas include this:
 
-* Numpy style docstring 
-* Up to date requirements.txt
-
-
+> * Numpy style docstring 
+> * Up to date requirements.txt
 
 
 

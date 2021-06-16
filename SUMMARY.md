@@ -5,7 +5,6 @@
 ## GIT
 
 * [Rules](git/rules.md)
-* [Workflow](git/workflow.md)
 
 ## Get-started
 
