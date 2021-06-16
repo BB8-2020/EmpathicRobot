@@ -1,11 +1,26 @@
 # Table of contents
 
 * [Home](README.md)
-* [Installation](installation.md)
+
+## GIT
+
+* [Rules](git/rules.md)
+* [Workflow](git/workflow.md)
+
+## Get-started
+
+* [Installation](get-started/installation-1.md)
+* [Documentation](get-started/documentation.md)
 
 ## Application
 
+* [Languages](application/languages.md)
 * [Installation Instructions](application/untitled.md)
+
+## Model
+
+* [Background information](model/background-information.md)
+* [Documentation](model/documentation.md)
 
 ## Links
 
