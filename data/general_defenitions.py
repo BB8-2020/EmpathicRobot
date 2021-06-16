@@ -2,16 +2,16 @@
 import _pickle as cPickle
 import bz2
 from math import ceil
-from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
+from data.type_hinting import DataSplit
 
-def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
-                                                      np.ndarray, np.ndarray, np.ndarray]:
+
+def split_data(X: np.ndarray, y: np.ndarray) -> DataSplit:
     """
     Split the incoming data into train, test and validation sets.
 
@@ -45,7 +45,7 @@ def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np
     x_train, x_val, y_train, y_val = model_selection.train_test_split(
         x_train, y_train, test_size=test_size, random_state=42
     )
-    return x_train, y_train, x_val, y_val, x_test, y_test
+    return DataSplit(x_train, y_train, x_val, y_val, x_test, y_test)
 
 
 def data_augmentation(x_train: np.ndarray) -> ImageDataGenerator:
