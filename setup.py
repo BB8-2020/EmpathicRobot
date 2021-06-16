@@ -14,7 +14,7 @@ true_set = {'true', 't', 'y', 'yes'}
 
 
 def read_developer_access() -> bool:
-    """Reads of the developer access true else return a None."""
+    """Reads if the developer access true else return a None."""
     developer = None
     if os.path.isfile(".env"):
         for line in open(".env").read().split('/n'):
