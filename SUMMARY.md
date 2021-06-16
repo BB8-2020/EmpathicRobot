@@ -5,6 +5,7 @@
 ## GIT
 
 * [Rules](git/rules.md)
+* [Linting](git/linting.md)
 
 ## Get-started
 
