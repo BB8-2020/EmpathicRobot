@@ -5,6 +5,10 @@ install_requires = [
     "tensorflow",
     "numpy",
     "pandas",
+    "opencv-python",
+    "keras",
+    "matplotlib",
+    "sklearn",
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
