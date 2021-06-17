@@ -1,10 +1,8 @@
-"""
-We want to know the accuracy of our online found model. To do that, we will test multiple photo's from our
-affectnet dataset on the model. The functions to make this possible can be found in this file.
-"""
-
+"""Let our detector guess the emotion of a given amount of affectnet photo's. Calculate the average amount of correct
+guesses."""
 from typing import List
 import pandas as pd
+import numpy as np
 from models.validation_model.detector_accuracy import calculate_accuracy
 
 
@@ -31,16 +29,17 @@ def update_df(start_row: int, end_row: int, data: List, df: pd.DataFrame) -> pd.
         df: pandas.core.frame.DataFrame
             Our updated DataFrame.
     """
-    for row in range(start_row, start_row + end_row):
-        df.at[row, 'image'] = data[0][row]
-        df.at[row, 'emotion'] = data[1][row]
+    for row in range(start_row, end_row):
+        df.at[row, 'Photo'] = data[0][row]
+        df.at[row, 'Correct_emotion'] = data[1][row]
     return df
 
 
-def aff_accuracy(start_row: int, end_row: int, data: List, df: pd.DataFrame) -> float:
+def aff_accuracy(start_row: int, end_row: int, data: List) -> float:
     """
-    We want to take an amount of photo's from our data. Then we also want to know how high the accuracy from the
-    detector is.
+    Take an amount of photo's from a dataset. And calculate how accurate the emotion detector is with detecting the
+    emotions depicted by the people in the photo's. Do this by calculating the percentage of photo's the emotion
+    detector got right.
 
     Parameters
     ----------
@@ -53,19 +52,14 @@ def aff_accuracy(start_row: int, end_row: int, data: List, df: pd.DataFrame) -> 
         data: List
             In our data you have our photo's and the corresponding emotion.
 
-        df: pandas.core.frame.DataFrame
-            Our DataFrame.
-
     Return
     ------
         accuracy: float
             A percentage of how many photo's our detector correctly guessed.
     """
+    df = pd.DataFrame(columns=['Photo', 'Correct_emotion'])
 
     df = update_df(start_row, end_row, data, df)
-
-    # Give the columns a different name.
-    df = df.rename(columns={"image": "Photo", 'emotion': 'Correct_emotion'})
 
     # The emotion names from our dataset and the detector aren't always the same.
     # Here we will make those names the same.
@@ -73,7 +67,7 @@ def aff_accuracy(start_row: int, end_row: int, data: List, df: pd.DataFrame) -> 
                     value=['happy', 'sad', 'angry', 'neutral', 'fear', 'surprise', 'disgust'])
 
     # Get the right data in the right variables.
-    photos = df['Photo'].values.tolist()
+    photos = np.array(df['Photo'].values.tolist()) * 255
     emotions = df['Correct_emotion'].values.tolist()
 
     # Calculate the accuracy of the trained model with our photo's.
