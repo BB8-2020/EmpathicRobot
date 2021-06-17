@@ -11,13 +11,13 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from data.type_hinting import DataSplit
 
 
-def split_data(X: np.ndarray, y: np.ndarray) -> DataSplit:
+def split_data(x: np.ndarray, y: np.ndarray) -> DataSplit:
     """
     Split the incoming data into train, test and validation sets.
 
     Parameters
     ----------
-        X: np.ndarray
+        x: np.ndarray
             All features (images)
         y: np.ndarray
             All targets (emotions)
@@ -36,11 +36,11 @@ def split_data(X: np.ndarray, y: np.ndarray) -> DataSplit:
         y_test
             The test targets (emotions)
     """
-    test_size = ceil(len(X) * 0.1)
+    test_size = ceil(len(x) * 0.1)
 
     # Split Data
     x_train, x_test, y_train, y_test = model_selection.train_test_split(
-        X, y, test_size=test_size, random_state=42
+        x, y, test_size=test_size, random_state=42
     )
     x_train, x_val, y_train, y_val = model_selection.train_test_split(
         x_train, y_train, test_size=test_size, random_state=42

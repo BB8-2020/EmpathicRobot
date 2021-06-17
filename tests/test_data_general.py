@@ -14,14 +14,14 @@ from data.general_defenitions import split_data, data_augmentation, show_images,
 data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
 labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
 
-X, y = fer.preprocess_data(data, labels)
-X, y = fer.clean_data_and_normalize(X, y)
+x, y = fer.preprocess_data(data, labels)
+X, y = fer.clean_data_and_normalize(x, y)
 
 
 def test_split_data():
     """Test the split data function if data is devided in correct pieces."""
-    total_len = len(X)
-    x_train, y_train, x_val, y_val, x_test, y_test = split_data(X, y)
+    total_len = len(x)
+    x_train, y_train, x_val, y_val, x_test, y_test = split_data(x, y)
 
     # The test and val variables are supposed to be 10% of the entire length, 20% together.
     length_test_train = math.ceil(0.1 * total_len)
@@ -35,9 +35,9 @@ def test_data_augmentation():
     data = bz2.BZ2File('tests/dataprocessing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
-    X, y = affect.preprocess_data(df)
-    X, y = affect.clean_data_and_normalize(X, y)
-    x_train = split_data(X, y)[0]
+    x, y = affect.preprocess_data(df)
+    x, y = affect.clean_data_and_normalize(x, y)
+    x_train = split_data(x, y)[0]
     datagen = data_augmentation(x_train)
 
     assert type(datagen) == ImageDataGenerator
@@ -45,7 +45,7 @@ def test_data_augmentation():
 
 def test_show_images():
     """Test the split data function if data is devided in correct pieces."""
-    x_train, y_train, _, _, _, _ = split_data(X, y)
+    x_train, y_train, _, _, _, _ = split_data(x, y)
     figsize = show_images(x_train, y_train, None, 5)
 
     # This is the expected shape for the figures that are made.

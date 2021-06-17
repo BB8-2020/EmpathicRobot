@@ -17,7 +17,7 @@ def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarra
             Second dataframe containing the targets (emotions)
     Return
     ------
-        X: np.ndarray
+        x: np.ndarray
             All features (images)
         y: np.ndarray
             All targets (emotions)
@@ -39,25 +39,25 @@ def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarra
     w = 48
     h = 48
     y = np.array(labels[orig_class_names])
-    X = np.zeros((n_samples, w, h, 1))
+    x = np.zeros((n_samples, w, h, 1))
     for i in range(n_samples):
-        X[i] = np.fromstring(data["pixels"][i], dtype=int, sep=" ").reshape((h, w, 1))
-    return X, y
+        x[i] = np.fromstring(data["pixels"][i], dtype=int, sep=" ").reshape((h, w, 1))
+    return x, y
 
 
-def clean_data_and_normalize(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def clean_data_and_normalize(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
     Remove the unnecessary columns and normalize all data.
 
     Parameters
     ----------
-        X: np.ndarray
+        x: np.ndarray
             All features (images)
         y: np.ndarray
             All targets (emotions)
     Return
     ------
-        X: np.ndarray
+        x: np.ndarray
             All  cleaned and normalized features (images)
         y: np.ndarray
             All  cleaned and normalized targets (emotions)
@@ -78,7 +78,7 @@ def clean_data_and_normalize(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, 
     # Using mask to remove unknown or NF images
     y_mask = y.argmax(axis=-1)
     mask = y_mask < orig_class_names.index("unknown")
-    X, y = X[mask], y[mask]
+    x, y = x[mask], y[mask]
 
     # Convert to probabilities between 0 and 1
     y = y[:, :-2] * 0.1
@@ -88,6 +88,6 @@ def clean_data_and_normalize(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, 
     y = y[:, :7]
 
     # Normalize image vectors
-    X /= 255.0
+    x /= 255.0
 
-    return X, y
+    return x, y
