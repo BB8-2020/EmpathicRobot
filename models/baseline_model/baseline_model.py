@@ -90,7 +90,8 @@ def create_model() -> keras.Sequential:
     return model
 
 
-def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float, save: bool = True) -> keras.callbacks:
+def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: int, vs: float, save: bool = True) \
+        -> keras.callbacks:
     """
     Train the model using the trainsets created in create_dataset().
 
@@ -110,6 +111,9 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
 
         vs: float
             float that determines the validation_split.
+
+        save: bool
+            choose to save the model as .pd.
 
     Return
     ------
