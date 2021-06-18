@@ -111,7 +111,7 @@ def face_from_image(img_file: str) -> bytes:
             closest_face = face
 
     # crops image to face
-    frame = crop_to_face(image, closest_face)
+    frame = crop_to_face(gray, closest_face)
 
     # reshapes image to 48 x 48
     reshaped_frame = reshape_image(frame)
