@@ -31,7 +31,7 @@ def read_data(path: str) -> dict:
         frame = json.loads(data.read())
         return frame
     except OSError:
-        print(f"File in this {path} does not exist")
+        raise Exception(f"File in this {path} does not exist")
 
 
 def create_datasets(frame: dict, feature: str, target: str) -> Tuple[np.ndarray, np.ndarray]:
@@ -118,7 +118,7 @@ def train_model(model: keras.Sequential, frame: dict, batch_size: int, epochs: i
     Return
     ------
         history
-            The callback where all the training results are saved in. This is used for plotting the training results.
+            The callback where all the training results are saved in. This is used for ploty cchting the training results.
     """
     x_train, y_train = create_datasets(frame, 'formatted_pixels', 'happy')
     history = keras.callbacks.History()
