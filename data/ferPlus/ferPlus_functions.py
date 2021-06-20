@@ -91,3 +91,52 @@ def clean_data_and_normalize(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, 
     x /= 255.0
 
     return x, y
+
+
+def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amount_left: int):
+    """
+    Remove the excess data where you want to balance the data.
+
+    Parameters
+    ----------
+        x_train: np.ndarray
+            All features (images)
+        y_train: np.ndarray
+            All targets (emotions)
+        emotions: string
+            Emotions you want to balance
+        emount_left: int
+            Amount of this emotion you want to have left
+    Return
+    ------
+        x_train: np.ndarray
+            All features with the amount_left of the images
+        y_train: np.ndarray
+            All targets with the amount_left of the emotions
+    """
+    emotions = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt', 'unknown', 'NF']
+    lst_emotions = []
+    for i in range(len(x_train)):
+        x = y_train[i]
+        lst_emotions.append(emotions[np.argmax(x)])
+
+    x_train, y_train = list(x_train), list(y_train)
+    count = 0
+    treshold_amount_of_emotion = lst_emotions.count(emotion) - amount_left
+    indexes = []
+
+    for index in range(len(x_train)):
+        if count >= treshold_amount_of_emotion:
+            break
+        if emotions[np.argmax(y_train[index])] == emotion:
+            indexes.append(index)
+            count += 1
+
+    indexes.reverse()
+
+    for i in indexes:
+        x_train.pop(i)
+        y_train.pop(i)
+
+    x_train, y_train = np.array(x_train), np.array(y_train)
+    return x_train, y_train
