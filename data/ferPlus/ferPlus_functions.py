@@ -3,6 +3,7 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+import cv2
 
 
 def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
@@ -93,7 +94,7 @@ def clean_data_and_normalize(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, 
     return x, y
 
 
-def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amount_left: int):
+def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amount_left: int) -> Tuple[np.ndarray, np.ndarray]:
     """
     Remove the excess data where you want to balance the data.
 
@@ -103,9 +104,9 @@ def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amo
             All features (images)
         y_train: np.ndarray
             All targets (emotions)
-        emotions: string
+        emotion: string
             Emotions you want to balance
-        emount_left: int
+        amount_left: int
             Amount of this emotion you want to have left
     Return
     ------
@@ -137,6 +138,59 @@ def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amo
     for i in indexes:
         x_train.pop(i)
         y_train.pop(i)
+
+    x_train, y_train = np.array(x_train), np.array(y_train)
+    return x_train, y_train
+
+
+def process_affectnet_data(x_train: np.ndarray, y_train: np.ndarray, extra_x_train: np.ndarray,
+                           extra_y_train: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Resize and format all incoming AffectNet data to be the same as the FerPlus data.
+
+    Parameters
+    ----------
+        x_train: np.ndarray
+            All features (images)
+        y_train: np.ndarray
+            All targets (emotions)
+        extra_x_train: np.ndarray
+            All features (images) from AffectNet
+        extra_y_train: np.ndarray
+            All targets (emotions) from AffectNet
+    Return
+    ------
+        x_train: np.ndarray
+            All features from FerPlus combined with AffectNet
+        y_train: np.ndarray
+            All targets from FerPlus combined with AffectNet
+    """
+    extra_x_train = extra_x_train / 255
+    new_x_train = np.zeros((len(extra_x_train), 48, 48, 1))
+
+    for i in range(len(extra_x_train)):
+        img = extra_x_train[i]
+        img = img.astype(np.float32)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = img[..., np.newaxis]
+
+        new_x_train[i] = img
+
+    for index in range(len(extra_x_train)):
+        dummies = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+        if extra_y_train[index] == 'Disgust':
+            dummies[-2] = 1.0
+        else:
+            dummies[-1] = 1.0
+
+        extra_y_train[index] = dummies
+
+    x_train, y_train = list(x_train), list(y_train)
+    new_x_train, extra_y_train = list(new_x_train), list(extra_y_train)
+
+    x_train.extend(new_x_train)
+    y_train.extend(extra_y_train)
 
     x_train, y_train = np.array(x_train), np.array(y_train)
     return x_train, y_train
