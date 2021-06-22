@@ -1,9 +1,10 @@
 """Functions for processing, cleaning and normalizing the FerPlus dataset."""
+import random
 from typing import Tuple
 
+import cv2
 import numpy as np
 import pandas as pd
-import cv2
 
 
 def preprocess_data(data: pd.DataFrame, labels: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
@@ -94,7 +95,8 @@ def clean_data_and_normalize(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, 
     return x, y
 
 
-def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amount_left: int) -> Tuple[np.ndarray, np.ndarray]:
+def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amount_left: int) -> \
+        Tuple[np.ndarray, np.ndarray]:
     """
     Remove the excess data where you want to balance the data.
 
@@ -116,10 +118,7 @@ def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amo
             All targets with the amount_left of the emotions
     """
     emotions = ['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt', 'unknown', 'NF']
-    lst_emotions = []
-    for i in range(len(x_train)):
-        x = y_train[i]
-        lst_emotions.append(emotions[np.argmax(x)])
+    lst_emotions = [emotions[np.argmax(y_train[i])] for i in range(len(x_train))]
 
     x_train, y_train = list(x_train), list(y_train)
     count = 0
@@ -139,8 +138,7 @@ def balance_emotions(x_train: np.ndarray, y_train: np.ndarray, emotion: str, amo
         x_train.pop(i)
         y_train.pop(i)
 
-    x_train, y_train = np.array(x_train), np.array(y_train)
-    return x_train, y_train
+    return np.array(x_train), np.array(y_train)
 
 
 def process_affectnet_data(x_train: np.ndarray, y_train: np.ndarray, extra_x_train: np.ndarray,
@@ -165,16 +163,10 @@ def process_affectnet_data(x_train: np.ndarray, y_train: np.ndarray, extra_x_tra
         y_train: np.ndarray
             All targets from FerPlus combined with AffectNet
     """
-    extra_x_train = extra_x_train / 255
-    new_x_train = np.zeros((len(extra_x_train), 48, 48, 1))
+    new_x_train = np.zeros((len(extra_x_train / 255), 48, 48, 1))
 
     for i in range(len(extra_x_train)):
-        img = extra_x_train[i]
-        img = img.astype(np.float32)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        img = img[..., np.newaxis]
-
-        new_x_train[i] = img
+        new_x_train[i] = cv2.cvtColor(extra_x_train[i].astype(np.float32), cv2.COLOR_BGR2GRAY)[..., np.newaxis]
 
     for index in range(len(extra_x_train)):
         dummies = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -186,11 +178,38 @@ def process_affectnet_data(x_train: np.ndarray, y_train: np.ndarray, extra_x_tra
 
         extra_y_train[index] = dummies
 
-    x_train, y_train = list(x_train), list(y_train)
-    new_x_train, extra_y_train = list(new_x_train), list(extra_y_train)
+    x_train, y_train, new_x_train, extra_y_train = list(x_train), list(y_train), list(new_x_train), list(extra_y_train)
 
     x_train.extend(new_x_train)
     y_train.extend(extra_y_train)
 
-    x_train, y_train = np.array(x_train), np.array(y_train)
-    return x_train, y_train
+    return np.array(x_train), np.array(y_train)
+
+
+def shuffle_arrays(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Random shuffle the features and targets the same order.
+
+    Parameters
+    ----------
+        x: np.ndarray
+            All features with added AffectNet.
+        y: np.ndarray
+            All targets with added AffectNet.
+    Return
+    ------
+        new_x: np.ndarray
+            All features shuffled with the same order as new_y.
+        new_y: np.ndarray
+            All features shuffled with the same order as new_x.
+    """
+    randomlist = random.sample(range(0, len(x)), len(x))
+
+    new_x = np.zeros((len(x), 48, 48, 1))
+    new_y = np.zeros((len(y), 7))
+
+    for index, rand_index in enumerate(randomlist):
+        new_x[index] = x[rand_index]
+        new_y[index] = y[rand_index]
+
+    return new_x, new_y
