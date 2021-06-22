@@ -2,7 +2,7 @@
 
 * [Home](README.md)
 
-## GIT
+## GitHub <a id="git"></a>
 
 * [Rules](git/rules.md)
 * [Linting](git/linting.md)

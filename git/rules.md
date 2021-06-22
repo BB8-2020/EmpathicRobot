@@ -20,7 +20,7 @@ Every commit masseg must include the following rules:
 >
 > Explain exactely what was done in this commit with more depth than the 50 character subject line. Remember to warp at 72 characters! 
 >
-> Include any additional notes, relevent linksm or co-authors.
+> Include any additional notes, relevent links or co-authors.
 
 ## Protected main
 
