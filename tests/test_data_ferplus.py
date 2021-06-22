@@ -29,6 +29,7 @@ def preprocess_clean(read_data):
 
 @pytest.fixture
 def read_extra_affect():
+    """Read extra data coming from AffectNet for FerPlus."""
     comp_data = bz2.BZ2File('tests/dataprocessing/fear_disgust_sample.pbz2', 'rb')
     extra_x_train, extra_y_train = cPickle.load(comp_data)
     return extra_x_train, extra_y_train
@@ -54,7 +55,7 @@ def test_clean_data_and_normalize():
 
 
 def test_balance_emotions(preprocess_clean):
-    """"Test to check if the good amount of the emotion as been removed."""
+    """Test to check if the good amount of the emotion as been removed."""
     x_train, y_train, x_val, y_val, x_test, y_test = split_data(preprocess_clean[0], preprocess_clean[1])
 
     amount_left = 2

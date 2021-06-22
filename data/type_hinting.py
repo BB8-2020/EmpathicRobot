@@ -1,3 +1,4 @@
+"""Define all NamedTuple for type hinting."""
 from typing import NamedTuple
 
 import numpy as np

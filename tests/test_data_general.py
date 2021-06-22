@@ -15,6 +15,7 @@ from data.general_defenitions import split_data, data_augmentation, show_images,
 
 @pytest.fixture
 def read_process_clean_data():
+    """Read, process and clean/normalize the FerPlus dataset."""
     data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
     labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
 
