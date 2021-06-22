@@ -5,13 +5,14 @@ from math import ceil
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from data.type_hinting import DataSplit
 
 
-def split_data(x: np.ndarray, y: np.ndarray) -> DataSplit:
+def split_data(x: np.ndarray, y: np.ndarray or pd.Dataframe) -> DataSplit:
     """
     Split the incoming data into train, test and validation sets.
 
@@ -19,8 +20,8 @@ def split_data(x: np.ndarray, y: np.ndarray) -> DataSplit:
     ----------
         x: np.ndarray
             All features (images)
-        y: np.ndarray
-            All targets (emotions)
+        y: np.ndarray or pd.Dataframe
+            All targets (emotions), FerPlus: array and AffectNet: dataframe
     Return
     ------
         x_train:
