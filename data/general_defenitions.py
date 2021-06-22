@@ -84,6 +84,12 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: ImageDataGene
             The train targets (emotions)
         datagen: np.ndarray = None
             The augmented images, can be None
+        amount: int = 25
+            The amount of images you want to get plotted
+    Return
+    ------
+        fig.get_size_inches(): list
+            The size of the made figs to test this function
     """
     it = datagen.flow(x_train, y_train, batch_size=1) if datagen else None
 
