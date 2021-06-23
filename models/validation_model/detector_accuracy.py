@@ -7,7 +7,7 @@ from fer import FER
 
 def recognise_emotion(photo: np.ndarray, correct_emotion: str, detector: FER) -> bool:
     """
-    Give our detector an image. Return whether or not our detector has guessed the correct emotion depicted by the
+    Give emotion detector an image. Return whether or not our detector has guessed the correct emotion depicted by the
     person in the image.
 
     Parameters
@@ -16,28 +16,24 @@ def recognise_emotion(photo: np.ndarray, correct_emotion: str, detector: FER) ->
             A picture of a face of a human.
 
         correct_emotion: str
-            The emotion that this human is displaying.
+            The emotion this human is displaying.
 
         detector: FER
             The model that will try and recognise an emotion in a picture.
-
-
 
     Return
     ------
         Return True if the function correctly guesses the emotion and a False if not.
     """
-
-    # The detector says our picture is of the wrong datatype. So we will change it. But dont worry, the picture
-    # will stay the same.
+    # Change numpy data type in order for the emotion recogniser to accept the image.
     photo = np.array(photo).astype(np.uint8)
 
     detector_emotion = detector.detect_emotions(photo)
 
-    if not detector_emotion:  # If the detector doesn't recognise a face, it will return a False.
+    if not detector_emotion:  # If emotion detector doesn't recognise a face, it returns False.
         return False
 
-    # If the detected emotion is the correct one, it will return True. If not, it will return False.
+    # If detected emotion is correct, return True. If not, return False.
     x = max(detector_emotion[0]['emotions'], key=lambda key: detector_emotion[0]['emotions'][key])
     return correct_emotion == x
 
@@ -45,7 +41,6 @@ def recognise_emotion(photo: np.ndarray, correct_emotion: str, detector: FER) ->
 def calculate_accuracy(photos: List[np.ndarray], emotions: List[str]) -> float:
     """
     Loop through an amount of photo's. Calculate what percentage of them can correctly be guessed by the detector.
-
     Parameters
     ----------
         photos: List[np.ndarray]
@@ -57,14 +52,14 @@ def calculate_accuracy(photos: List[np.ndarray], emotions: List[str]) -> float:
     Return
     ------
         accuracy: float
-            Return a number that tells the user what percentage of the photo's the model correctly recognised.
+            Percentage of photo's that the emotion detector correctly guessed.
     """
-    # Activate the emotion detector.
+    # Activate emotion detector.
     detector = FER(mtcnn=True)
 
     correct = []
 
-    for i in range(0, len(photos)):  # Does the detector correctly guess the emotion?
+    for i in range(0, len(photos)):  # Does the emotion detector correctly guess the emotion?
         correct.append(recognise_emotion(photos[i], emotions[i], detector))
 
     # Calculate average correct guesses.

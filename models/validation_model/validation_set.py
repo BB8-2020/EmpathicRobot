@@ -1,16 +1,19 @@
 """Find faces in a picture, resize that picture and ask the user which emotion they see on this persons face."""
-import numpy as np
-from PIL import Image
 import io
 import os
+
+import numpy as np
+from PIL import Image
+
 os.chdir('../..')
 from facedetection.face_detection import face_from_image
+
 os.chdir('models/validation_model/')
 
 
 def what_emotion(image: Image) -> str:
     """
-    The user will be shown an image and the program will ask you which emotion is depicted here.
+    User will be shown an image and the program will ask user which emotion is depicted on the image.
 
     Parameters
     ----------
@@ -20,9 +23,8 @@ def what_emotion(image: Image) -> str:
     Return
     ------
         emotion: str
-            Return a string of an emotion you think is shown on the picture.
+            Return a string of an emotion the user thinks is shown on the picture.
     """
-
     while True:
         image.show()  # Show user an image.
         print('Neutral, Happy, Anger, Disgust, Surprise, Sad, Fear')
@@ -41,16 +43,12 @@ def photo_find_faces(filename: str) -> dict:
     Parameters
     ----------
         filename: str
-            The name of the image file.
-
-    Raises
-    ------
-        Raises error if no face can be detected.
+            Name of the image file.
 
     Return
     ------
         new_row:dict
-            You will return a dictionary of the picture and the emotion shows in this image.
+            Return a dictionary of the picture and the emotion shown in this image.
     """
     # Get the picture from the path and filename.
     pic_path = os.getcwd() + '/BB8_validation/' + filename
@@ -59,12 +57,13 @@ def photo_find_faces(filename: str) -> dict:
         picture = face_from_image(pic_path)
 
     except Exception:
+        # If the face_detector doesn't find a face, we will return a row with None value's. Which we can later remove.
         return {'Photo': None, 'Correct_emotion': None}
 
-    # If the face_detector doesn't find a face, we will skip this picture.
+    # The image gets returned as a bitmap. We will turn it into a normal picture.
     picture = Image.open(io.BytesIO(picture))
 
-    # Open picture.
+    # Find and open original size picture to show user.
     image = Image.open(os.getcwd() + '/BB8_validation/' + filename)
 
     # Ask user which emotion is shown by the person in the image.
@@ -72,6 +71,6 @@ def photo_find_faces(filename: str) -> dict:
 
     picture = np.asarray(picture)
 
-    # Put the photo and the emotion in a dictionary.
+    # Put photo and emotion in a dictionary and return it.
     new_row = {'Photo': picture, 'Correct_emotion': emotion}
     return new_row
