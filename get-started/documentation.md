@@ -3,7 +3,6 @@
 To generate documentation for the model use the following command:
 
 ```text
-! pip install pydoc
-pydoc <path to module> 
+$ pydoc-markdown --server --open
 ```
 
