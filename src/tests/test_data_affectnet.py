@@ -5,7 +5,7 @@ import bz2
 import numpy as np
 import pandas as pd
 
-from src.data import preprocess_data, clean_data_and_normalize, convert_to_dataframe
+from src.data.affectNet.affectNet_functions import preprocess_data, clean_data_and_normalize, convert_to_dataframe
 
 
 def test_convert_to_dataframe():

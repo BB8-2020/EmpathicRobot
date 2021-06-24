@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from src.data.affectNet import affectNet_functions as affect
 from src.data.ferPlus import ferPlus_functions as fer
-from src.data import split_data, data_augmentation, show_images, comp_pickle_save
+from src.data.general_defenitions import split_data, data_augmentation, show_images, comp_pickle_save
 
 
 @pytest.fixture

@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-from data.type_hinting import DataSplit
+from src.data.type_hinting import DataSplit
 
 
 def split_data(x: np.ndarray, y: np.ndarray or pd.Dataframe) -> DataSplit:

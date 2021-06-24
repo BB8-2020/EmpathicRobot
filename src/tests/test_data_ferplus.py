@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize, balance_emotions, \
+from src.data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize, balance_emotions, \
     process_affectnet_data, shuffle_arrays
 from data.general_defenitions import split_data
 
