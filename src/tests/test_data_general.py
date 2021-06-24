@@ -7,9 +7,9 @@ import os
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-from data.affectNet import affectNet_functions as affect
-from data.ferPlus import ferPlus_functions as fer
-from data.general_defenitions import split_data, data_augmentation, show_images, comp_pickle_save
+from src.data.affectNet import affectNet_functions as affect
+from src.data.ferPlus import ferPlus_functions as fer
+from src.data import split_data, data_augmentation, show_images, comp_pickle_save
 
 data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
 labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')

@@ -16,21 +16,5 @@ To install al requirements by run
 **Developer** 
 If you are a developer set `developer=True` in `.env`
 
-
-## Contant 
-
-| Section | Link |
-| ------- | -------|
-| Data preparation|  |
-| Models|        |
-| tests|          |
-| GoogleDrive|        |
-| OneDrive|        |
-
-
-## Development
-
-
-
 ## License
 MIT

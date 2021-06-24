@@ -4,14 +4,14 @@ import mock
 import builtins
 from PIL import Image
 
-from models.validation_model.validation_set import what_emotion, photo_find_faces
+from models.validation_model.validation_set import choose_emotion, photo_find_faces
 
 
 def test_what_emotion():
     """Test the what_emotion function by checking the return value."""
     image = Image.open("tests/datavalidation/storm_surprise.jpg")
     with mock.patch.object(builtins, 'input', lambda _: 'surprise'):
-        assert what_emotion(image) == 'surprise'
+        assert choose_emotion(image) == 'surprise'
 
 
 @pytest.mark.skip(reason="There is no data file added to the repository.")

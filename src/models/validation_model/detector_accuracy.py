@@ -26,15 +26,14 @@ def recognise_emotion(photo: np.ndarray, correct_emotion: str, detector: FER) ->
     """
     # Change numpy data type in order for the emotion recogniser to accept the image.
     photo = np.array(photo).astype(np.uint8)
-
     detector_emotion = detector.detect_emotions(photo)
 
     if not detector_emotion:  # If emotion detector doesn't recognise a face, it returns False.
         return False
 
     # If detected emotion is correct, return True. If not, return False.
-    x = max(detector_emotion[0]['emotions'], key=lambda key: detector_emotion[0]['emotions'][key])
-    return correct_emotion == x
+    predict = max(detector_emotion[0]['emotions'], key=lambda key: detector_emotion[0]['emotions'][key])
+    return correct_emotion == predict
 
 
 def calculate_accuracy(photos: List[np.ndarray], emotions: List[str]) -> float:
@@ -56,11 +55,8 @@ def calculate_accuracy(photos: List[np.ndarray], emotions: List[str]) -> float:
     # Activate emotion detector.
     detector = FER(mtcnn=True)
 
-    correct = []
-
-    for i in range(0, len(photos)):  # Does the emotion detector correctly guess the emotion?
-        correct.append(recognise_emotion(photos[i], emotions[i], detector))
+    correct = [recognise_emotion(photos[i], emotions[i], detector) for i in range(len(photos))]
 
     # Calculate average correct guesses.
-    accuracy = sum(correct) * 100 / len(correct)
+    accuracy = (sum(correct) / len(correct)) * 100
     return accuracy

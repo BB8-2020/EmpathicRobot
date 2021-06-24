@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-from data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize
+from src.data import preprocess_data, clean_data_and_normalize
 
 
 def test_preprocess_data():

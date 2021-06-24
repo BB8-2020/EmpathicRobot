@@ -4,41 +4,36 @@ import os
 
 import numpy as np
 from PIL import Image
-
-# os.chdir('../..')
 from facedetection.face_detection import face_from_image
 
-# os.chdir('models/validation_model/')
 
-
-def what_emotion(image: Image) -> str:
+def choose_emotion(image: Image) -> str:
     """
     User will be shown an image and the program will ask user which emotion is depicted on the image.
 
     Parameters
     ----------
         image: Image
-            This is an PILLOW Image type. It's a picture of a person.
+            This is an PILLOW Image type.
 
     Return
     ------
         emotion: str
             Return a string of an emotion the user thinks is shown on the picture.
     """
+    emotions = ['neutral', 'happy', 'anger', 'disgust', 'surprise', 'sad', 'fear']
     while True:
         image.show()  # Show user an image.
-        print('Neutral, Happy, Anger, Disgust, Surprise, Sad, Fear')
-        # What emotion does the person in the picture show?
-        emotion = input('Which single of the emotions above you do you recognise?: ').lower()
-        print('\n')
-        if emotion in ['neutral', 'happy', 'anger', 'disgust', 'surprise', 'sad', 'fear']:
-            # Only if the user correctly typed in his emotion, will we continue.
+        print(emotions)
+        emotion = str(input('Which single of the emotions above you do you recognise?: \n')).lower()
+        if emotion in emotions:
             return emotion
 
 
-def photo_find_faces(filename: str) -> dict:
+def label_faces(filename: str) -> dict:
     """
-    Call face detection function. Get the emotions depicted by the person in the given image.
+    Get face from image. Get the emotions depicted by the person in the given image.
+    And label the face with the chosen emotion.
 
     Parameters
     ----------
@@ -67,7 +62,7 @@ def photo_find_faces(filename: str) -> dict:
     image = Image.open(os.getcwd() + "/" + filename)
 
     # Ask user which emotion is shown by the person in the image.
-    emotion = what_emotion(image)
+    emotion = choose_emotion(image)
 
     picture = np.asarray(picture)
 
