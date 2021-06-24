@@ -5,10 +5,10 @@ import os
 import numpy as np
 from PIL import Image
 
-os.chdir('../..')
+# os.chdir('../..')
 from facedetection.face_detection import face_from_image
 
-os.chdir('models/validation_model/')
+# os.chdir('models/validation_model/')
 
 
 def what_emotion(image: Image) -> str:
@@ -51,7 +51,7 @@ def photo_find_faces(filename: str) -> dict:
             Return a dictionary of the picture and the emotion shown in this image.
     """
     # Get the picture from the path and filename.
-    pic_path = os.getcwd() + '/BB8_validation/' + filename
+    pic_path = os.getcwd() + "/" + filename
 
     try:
         picture = face_from_image(pic_path)
@@ -64,7 +64,7 @@ def photo_find_faces(filename: str) -> dict:
     picture = Image.open(io.BytesIO(picture))
 
     # Find and open original size picture to show user.
-    image = Image.open(os.getcwd() + '/BB8_validation/' + filename)
+    image = Image.open(os.getcwd() + "/" + filename)
 
     # Ask user which emotion is shown by the person in the image.
     emotion = what_emotion(image)
