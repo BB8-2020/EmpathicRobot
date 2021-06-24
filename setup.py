@@ -9,6 +9,8 @@ install_requires = [
     "keras",
     "matplotlib",
     "sklearn",
+    "mock",
+    "fer",
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
