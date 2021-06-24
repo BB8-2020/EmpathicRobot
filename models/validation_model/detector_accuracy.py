@@ -1,5 +1,4 @@
-"""In this document there are functions that will go through a series of photo's and will try to guess the correct
-emotion depicted there."""
+"""Functions that will go through a series of photo's and will try to guess the correct emotion depicted there."""
 import numpy as np
 from typing import List
 from fer import FER
