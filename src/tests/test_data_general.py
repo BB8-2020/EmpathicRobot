@@ -16,8 +16,8 @@ from src.data.general_defenitions import split_data, data_augmentation, show_ima
 @pytest.fixture
 def read_process_clean_data():
     """Read, process and clean/normalize the FerPlus dataset."""
-    data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
-    labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
+    data = pd.read_csv('src/tests/dataprocessing/fer2013_sample.csv')
+    labels = pd.read_csv('src/tests/dataprocessing/fer2013new_sample.csv')
 
     x, y = fer.preprocess_data(data, labels)
     x, y = fer.clean_data_and_normalize(x, y)
@@ -40,7 +40,7 @@ def test_split_data(read_process_clean_data):
 
 def test_data_augmentation():
     """Test the split data function if data is devided in correct pieces."""
-    data = bz2.BZ2File('tests/dataprocessing/affectNet_sample.pbz2', 'rb')
+    data = bz2.BZ2File('src/tests/dataprocessing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
     x, y = affect.preprocess_data(df)

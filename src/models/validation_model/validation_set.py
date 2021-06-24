@@ -4,7 +4,8 @@ import os
 
 import numpy as np
 from PIL import Image
-from facedetection.face_detection import face_from_image
+from src.facedetection.face_detection import face_from_image
+from src.facedetection.exceptions import NoFace
 
 
 def choose_emotion(image: Image) -> str:
@@ -51,7 +52,7 @@ def label_faces(filename: str) -> dict:
     try:
         picture = face_from_image(pic_path)
 
-    except OSError:
+    except NoFace:
         # If the face_detector doesn't find a face, we will return a row with None value's. Which we can later remove.
         return {'Photo': None, 'Correct_emotion': None}
 

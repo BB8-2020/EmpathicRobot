@@ -14,7 +14,7 @@ def test_convert_to_dataframe():
                 7: 'Contempt', 8: 'None', 9: 'Uncertain', 10: 'No-Face'}
 
     cap = 1
-    path = 'tests/dataprocessing/train_set'
+    path = 'src/tests/dataprocessing/train_set'
 
     df = pd.DataFrame(columns=['formatted_pixels', 'target'])
 
@@ -25,7 +25,7 @@ def test_convert_to_dataframe():
 
 def test_preprocess_data():
     """Test the preprocess functions by checking if the images and emotions are the right shape."""
-    data = bz2.BZ2File('tests/dataprocessing/affectNet_sample.pbz2', 'rb')
+    data = bz2.BZ2File('src/tests/dataprocessing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
     x, y = preprocess_data(df)

@@ -3,15 +3,15 @@ import pytest
 import os
 
 from tensorflow.keras.models import load_model
-from models.functions import save_all_model, save_model_to_lite
-from models.classification_model.model_functions import read_data, evaluate_model
+from src.models.functions import save_all_model, save_model_to_lite
+from src.models.classification_model.model_functions import read_data, evaluate_model
 
 
 @pytest.fixture
 def prep_for_save():
     """Prepare for the save functions because both need this to be ran."""
     x_train, y_train, x_val, y_val, x_test, y_test = read_data('tests/dataclassificationmodel/ferPlus_processed.pbz2')
-    model = load_model("tests/datamodels/model")
+    model = load_model("src/tests/datamodels/model")
     _, test_accuracy = evaluate_model(model, x_test, y_test, 64)
     return model, test_accuracy
 

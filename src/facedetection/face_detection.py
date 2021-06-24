@@ -1,9 +1,10 @@
 """Converts image to image with just a face in byte format."""
 import cv2
 import numpy as np
+from src.facedetection.exceptions import NoFace
 
 # load classifier from file
-face_cascade = cv2.CascadeClassifier('facedetection/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('src/facedetection/haarcascade_frontalface_default.xml')
 
 
 def crop_to_face(image: np.ndarray, face: np.ndarray) -> np.ndarray:
@@ -98,7 +99,7 @@ def face_from_image(img_file: str) -> bytes:
 
     # if no face is detected raise error
     if len(detected_faces) == 0:
-        raise Exception("No face was detected in the image")
+        raise NoFace("No face was detected in the image")
 
     # gets closest face out of the scanned faces
     closest_face = None
