@@ -1,12 +1,12 @@
 """Tests for the baseline_model functions."""
 import pytest
 
-from models.baseline_model.baseline_model import read_data
-from models.baseline_model.baseline_model import create_datasets
-from models.baseline_model.baseline_model import create_model
-from models.baseline_model.baseline_model import train_model
-from models.baseline_model.baseline_model import compile_model
-from models.baseline_model.baseline_model import evaluate_model
+from src.models.baseline_model.baseline_model import read_data
+from src.models.baseline_model.baseline_model import create_datasets
+from src.models.baseline_model.baseline_model import create_model
+from src.models.baseline_model.baseline_model import train_model
+from src.models.baseline_model.baseline_model import compile_model
+from src.models.baseline_model.baseline_model import evaluate_model
 
 
 @pytest.fixture

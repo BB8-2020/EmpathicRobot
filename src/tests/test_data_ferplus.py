@@ -8,7 +8,7 @@ import pytest
 
 from src.data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize, balance_emotions, \
     process_affectnet_data, shuffle_arrays
-from data.general_defenitions import split_data
+from src.data.general_defenitions import split_data
 
 
 @pytest.fixture
