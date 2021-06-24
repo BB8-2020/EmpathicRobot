@@ -3,12 +3,15 @@ import os
 
 install_requires = [
     "tensorflow",
+    "keras",
     "numpy",
     "pandas",
     "opencv-python",
     "keras",
     "matplotlib",
     "sklearn",
+    "mock",
+    "fer",
 ]
 true_set = {'true', 't', 'y', 'yes'}
 
@@ -44,7 +47,7 @@ if is_developer:
 
 setup(
     name='EmpathicRobot',
-    version='1.1.0',
+    version='1.8.0',
     description='Recognize emotions using camera images of the robot',
     author='Hogeschool Utrecht AI - 2021',
     author_email='maria.dukmak@student.hu.nl',

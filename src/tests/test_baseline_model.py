@@ -1,18 +1,18 @@
 """Tests for the baseline_model functions."""
 import pytest
 
-from models.baseline_model.baseline_model import read_data
-from models.baseline_model.baseline_model import create_datasets
-from models.baseline_model.baseline_model import create_model
-from models.baseline_model.baseline_model import train_model
-from models.baseline_model.baseline_model import compile_model
-from models.baseline_model.baseline_model import evaluate_model
+from src.models.baseline_model.baseline_model import read_data
+from src.models.baseline_model.baseline_model import create_datasets
+from src.models.baseline_model.baseline_model import create_model
+from src.models.baseline_model.baseline_model import train_model
+from src.models.baseline_model.baseline_model import compile_model
+from src.models.baseline_model.baseline_model import evaluate_model
 
 
 @pytest.fixture
 def run_read_data_train():
     """Read the given datafile."""
-    data = read_data("tests/databaselinemodel/train_happy_frame.json")
+    data = read_data("src/tests/databaselinemodel/train_happy_frame.json")
     return data
 
 
@@ -43,7 +43,7 @@ def test_read_data(run_read_data_train):
 def test_raises_oserror_read_data():
     """Testing the raise Exception in the read_data function by giving a wrong path."""
     with pytest.raises(Exception, match=r"File in this .* does not exist"):
-        read_data("tests/databaselinemodel")
+        read_data("src/tests/databaselinemodel")
 
 
 # All tests marked with long take to long to run. If you want to run these tests use . pytest -vs
@@ -86,7 +86,7 @@ def test_compile_model(run_train_model):
 @pytest.mark.long
 def test_evaluate_model(run_train_model):
     """Testing the evaluate_model function by checking the output length and type."""
-    test_data = read_data("tests/databaselinemodel/test_happy_frame.json")
+    test_data = read_data("src/tests/databaselinemodel/test_happy_frame.json")
     model, _ = run_train_model
     output = evaluate_model(model=model, frame=test_data, batch_size=256)
     assert len(output) == 2 and type(output[0]) == float and type(output[1]) == float

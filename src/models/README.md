@@ -30,8 +30,7 @@ In this folder you can find all the models that we have trained. The analysis of
   
 
 - [Validation model](https://github.com/BB8-2020/EmpathicRobot/tree/main/models/validation_model)
-  
-    **Dit moet nog bijgewerkt worden!!**
+  A pre-trained model to use as a validation model of our self-made model.
   
 ## Installation 
 

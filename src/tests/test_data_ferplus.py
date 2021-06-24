@@ -6,16 +6,16 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize, balance_emotions, \
+from src.data.ferPlus.ferPlus_functions import preprocess_data, clean_data_and_normalize, balance_emotions, \
     process_affectnet_data, shuffle_arrays
-from data.general_defenitions import split_data
+from src.data.general_defenitions import split_data
 
 
 @pytest.fixture
 def read_data():
     """Read the FerPlus image set and label set."""
-    data = pd.read_csv('tests/dataprocessing/fer2013_sample.csv')
-    labels = pd.read_csv('tests/dataprocessing/fer2013new_sample.csv')
+    data = pd.read_csv('src/tests/dataprocessing/fer2013_sample.csv')
+    labels = pd.read_csv('src/tests/dataprocessing/fer2013new_sample.csv')
     return data, labels
 
 
@@ -30,7 +30,7 @@ def preprocess_clean(read_data):
 @pytest.fixture
 def read_extra_affect():
     """Read extra data coming from AffectNet for FerPlus."""
-    comp_data = bz2.BZ2File('tests/dataprocessing/fear_disgust_sample.pbz2', 'rb')
+    comp_data = bz2.BZ2File('src/tests/dataprocessing/fear_disgust_sample.pbz2', 'rb')
     extra_x_train, extra_y_train = cPickle.load(comp_data)
     return extra_x_train, extra_y_train
 

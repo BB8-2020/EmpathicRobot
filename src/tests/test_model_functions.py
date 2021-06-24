@@ -5,17 +5,17 @@ because it would take too long to run, because the model gets fitted every time.
 import pytest
 
 from tensorflow.keras import Sequential
-from models.classification_model.conv.conv_model import build_models
-from models.classification_model.model_functions import read_data
-from models.classification_model.model_functions import fit_model
-from models.classification_model.model_functions import compile_model
-from models.classification_model.model_functions import evaluate_model
+from src.models.classification_model.conv.conv_model import build_models
+from src.models.classification_model.model_functions import read_data
+from src.models.classification_model.model_functions import fit_model
+from src.models.classification_model.model_functions import compile_model
+from src.models.classification_model.model_functions import evaluate_model
 
 
 @pytest.fixture
 def model_data():
     """Split the data to use in other test functions."""
-    x_train, y_train, x_val, y_val, x_test, y_test = read_data("tests/dataclassificationmodel/ferPlus_processed.pbz2", False)
+    x_train, y_train, x_val, y_val, x_test, y_test = read_data("src/tests/dataclassificationmodel/ferPlus_processed.pbz2", False)
     return x_train, y_train, x_val, y_val, x_test, y_test
 
 
@@ -43,7 +43,7 @@ def test_read_data_processed(model_data):
 
 def test_read_data_augmented():
     """Testing the function by checking if the output is the correct size and type."""
-    data = read_data("tests/dataclassificationmodel/ferPlus_augment.pbz2", True)
+    data = read_data("src/tests/dataclassificationmodel/ferPlus_augment.pbz2", True)
     assert len(data) == 7 and type(data) is tuple
 
 
