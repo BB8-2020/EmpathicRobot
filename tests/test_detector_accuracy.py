@@ -1,3 +1,4 @@
+"""Tests for the detector_accuracy.py functions."""
 import pytest
 from fer import FER
 from PIL import Image
