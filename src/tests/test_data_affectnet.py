@@ -20,7 +20,7 @@ def test_convert_to_dataframe():
 
     convert_to_dataframe(df, emotions, path, cap)
 
-    assert len(df['target']) == 2
+    assert len(df['target']) == 1
 
 
 def test_preprocess_data():
