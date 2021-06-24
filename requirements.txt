@@ -1,7 +1,6 @@
 numpy~=1.19.5
 tensorflow~=2.5.0
 fer~=20.1.3
-opencv2-python
 setuptools~=56.2.0
 opencv-python~=4.5.2.52
 pandas~=1.2.4
