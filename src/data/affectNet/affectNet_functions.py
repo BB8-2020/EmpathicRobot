@@ -25,7 +25,7 @@ def convert_to_dataframe(df: pd.DataFrame, emotions: dict, path: str, cap: int =
             max size of a dataframe we create
     """
     # Get the name of last image in folder
-    latest_img = int(os.listdir(path + "/images")[-1].split(".")[0])
+    latest_img = int(os.listdir(f"{path}/images")[-1].split(".")[0])
 
     frame_index = 0
 
@@ -35,8 +35,8 @@ def convert_to_dataframe(df: pd.DataFrame, emotions: dict, path: str, cap: int =
 
     for i in range(latest_img + 1):
         try:
-            emotion = np.load(path + "/annotations/" + str(i) + "_exp.npy")
-            img = mpimg.imread(path + "/images/" + str(i) + ".jpg")
+            emotion = np.load(f"{path}/annotations/{i}_exp.npy")
+            img = mpimg.imread(f"{path}/images/{i}.jpg")
 
             df.at[frame_index, "formatted_pixels"] = img
             df.at[frame_index, "target"] = emotions[int(emotion)]
@@ -58,7 +58,7 @@ def preprocess_data(data: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
             Dataframe containing all data
     Return
     ------
-        X: np.ndarray
+        x: np.ndarray
             Array containing all resized images
         y: np.ndarray
             Array containing all emotions
@@ -68,37 +68,37 @@ def preprocess_data(data: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
     height = 48
 
     y = np.array(data["target"])
-    X = np.zeros((n_samples, width, height, 3))
+    x = np.zeros((n_samples, width, height, 3))
 
     for i in range(n_samples):
-        X[i] = cv2.resize(
+        x[i] = cv2.resize(
             data["formatted_pixels"].iloc[i],
             dsize=(width, height),
             interpolation=cv2.INTER_CUBIC,
         )
 
-    return X, y
+    return x, y
 
 
-def clean_data_and_normalize(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, pd.DataFrame]:
+def clean_data_and_normalize(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, pd.DataFrame]:
     """
     Normalize the data.
 
     Parameters
     ----------
-        X: np.ndarray
+        x: np.ndarray
             All features (images)
         y: np.ndarray
             All targets (emotions)
     Return
     ------
-        X: np.ndarray
+        x: np.ndarray
             All  cleaned and normalized features (images)
         y: np.ndarray
             All  cleaned and normalized targets (emotions)
     """
     # Normalize image vectors
     y = pd.get_dummies(y)
-    X /= 255.0
+    x /= 255.0
 
-    return X, y
+    return x, y

@@ -28,17 +28,17 @@ def test_preprocess_data():
     data = bz2.BZ2File('tests/dataprocessing/affectNet_sample.pbz2', 'rb')
     df = cPickle.load(data)
 
-    X, y = preprocess_data(df)
-    size = np.array(X[0]).shape
+    x, y = preprocess_data(df)
+    size = np.array(x[0]).shape
     expected_size = (48, 48, 3)
     assert size == expected_size
 
 
 def test_clean_data_and_normalize():
     """Test the clean and normalize function."""
-    X = np.array([255.0, 255.0, 255.0, 255.0, 255.0, 255.0, 255.0])
+    x = np.array([255.0, 255.0, 255.0, 255.0, 255.0, 255.0, 255.0])
     y = np.array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
-    X, y = clean_data_and_normalize(X, y)
+    x, y = clean_data_and_normalize(x, y)
 
-    assert (int(X[0]), y.shape) == (1, (10, 10))
+    assert (int(x[0]), y.shape) == (1, (10, 10))

@@ -2,25 +2,26 @@
 import _pickle as cPickle
 import bz2
 from math import ceil
-from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn import model_selection
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
+from data.type_hinting import DataSplit
 
-def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
-                                                      np.ndarray, np.ndarray, np.ndarray]:
+
+def split_data(x: np.ndarray, y: np.ndarray or pd.Dataframe) -> DataSplit:
     """
     Split the incoming data into train, test and validation sets.
 
     Parameters
     ----------
-        X: np.ndarray
+        x: np.ndarray
             All features (images)
-        y: np.ndarray
-            All targets (emotions)
+        y: np.ndarray or pd.Dataframe
+            All targets (emotions), FerPlus: array and AffectNet: dataframe
     Return
     ------
         x_train:
@@ -36,16 +37,16 @@ def split_data(X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np
         y_test
             The test targets (emotions)
     """
-    test_size = ceil(len(X) * 0.1)
+    test_size = ceil(len(x) * 0.1)
 
     # Split Data
     x_train, x_test, y_train, y_test = model_selection.train_test_split(
-        X, y, test_size=test_size, random_state=42
+        x, y, test_size=test_size, random_state=42
     )
     x_train, x_val, y_train, y_val = model_selection.train_test_split(
         x_train, y_train, test_size=test_size, random_state=42
     )
-    return x_train, y_train, x_val, y_val, x_test, y_test
+    return DataSplit(x_train, y_train, x_val, y_val, x_test, y_test)
 
 
 def data_augmentation(x_train: np.ndarray) -> ImageDataGenerator:
@@ -84,6 +85,12 @@ def show_images(x_train: np.ndarray, y_train: np.ndarray, datagen: ImageDataGene
             The train targets (emotions)
         datagen: np.ndarray = None
             The augmented images, can be None
+        amount: int = 25
+            The amount of images you want to get plotted
+    Return
+    ------
+        fig.get_size_inches(): list
+            The size of the made figs to test this function
     """
     it = datagen.flow(x_train, y_train, batch_size=1) if datagen else None
 
