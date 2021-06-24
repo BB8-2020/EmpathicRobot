@@ -56,7 +56,7 @@ def photo_find_faces(filename: str) -> dict:
     try:
         picture = face_from_image(pic_path)
 
-    except Exception:
+    except OSError:
         # If the face_detector doesn't find a face, we will return a row with None value's. Which we can later remove.
         return {'Photo': None, 'Correct_emotion': None}
 

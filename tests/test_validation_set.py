@@ -22,6 +22,6 @@ def test_photo_find_faces():
 
 
 def test_photo_find_faces_exception():
-    """"Test the exception in photo_find_faces() by checking the values of the output."""
+    """Test the exception in photo_find_faces() by checking the values of the output."""
     output = photo_find_faces("exception")
     assert list(output.values()) == [None, None]
