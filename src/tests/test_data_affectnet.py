@@ -4,6 +4,7 @@ import bz2
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from src.data.affectNet.affectNet_functions import preprocess_data, clean_data_and_normalize, convert_to_dataframe
 
@@ -23,6 +24,7 @@ def test_convert_to_dataframe():
     assert len(df['target']) == 1
 
 
+@pytest.mark.long
 def test_preprocess_data():
     """Test the preprocess functions by checking if the images and emotions are the right shape."""
     data = bz2.BZ2File('src/tests/dataprocessing/affectNet_sample.pbz2', 'rb')

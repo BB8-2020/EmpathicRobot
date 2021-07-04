@@ -38,6 +38,7 @@ def test_split_data(read_process_clean_data):
     assert (len(x_train), len(x_test), len(x_val)) == (length_train, length_test_train, length_test_train)
 
 
+@pytest.mark.long
 def test_data_augmentation():
     """Test the split data function if data is devided in correct pieces."""
     data = bz2.BZ2File('src/tests/dataprocessing/affectNet_sample.pbz2', 'rb')
