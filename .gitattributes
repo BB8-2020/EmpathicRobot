@@ -7,3 +7,4 @@
 *.BMP filter=lfs diff=lfs merge=lfs -text
 src/tests/datamodels filter=lfs diff=lfs merge=lfs -text
 src/tests/dataprocessing/train_set filter=lfs diff=lfs merge=lfs -text
+src/tests/dataprocessing/ filter=lfs diff=lfs merge=lfs -text

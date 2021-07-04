@@ -12,9 +12,16 @@ Rename `.env.example` to `.env`
 To install al requirements by run
     
         pip install .
-    
+
 **Developer** 
 If you are a developer set `developer=True` in `.env`
+
+
+## Run 
+By default the model is placed in the [Sanbot](https://github.com/BB8-2020/MoodGuesserSanbot) application.
+To creat, run and test the model you colud run [this](https://github.com/BB8-2020/EmpathicRobot/blob/main/src/models/classification_model/conv/ferPlus_model.ipynb) file. 
+Therefore you need to get the data by generate it yourself or download it from the [Onedrive](https://hogeschoolutrecht-my.sharepoint.com/personal/maria_dukmak_student_hu_nl/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmaria%5Fdukmak%5Fstudent%5Fhu%5Fnl%2FDocuments%2FBB8). Read [this](https://github.com/BB8-2020/EmpathicRobot/blob/main/src/data/README.md) for more info. 
+
 
 ## License
 MIT
